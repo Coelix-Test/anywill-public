@@ -1,0 +1,15 @@
+.u-flex{
+    display: flex;
+    &.is-direction-column{
+        flex-direction: column;
+    }
+    &.is-direction-row{
+        flex-direction: row;
+    }
+    &.is-align-center{
+        align-items: center;
+    }
+    &.is-justify-center{
+        justify-content: center;
+    }
+}

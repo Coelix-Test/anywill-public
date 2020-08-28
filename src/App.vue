@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <navigation />
     <transition
       name="cool"
       mode="out-in"
@@ -12,9 +13,12 @@
 </template>
 
 <script>
+import Navigation from '@/components/common/Navigation.vue';
 
 export default {
-  
+  components: {
+    Navigation,
+  }
 }
 </script>
 

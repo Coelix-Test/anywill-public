@@ -1,9 +1,15 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Index from '@/views/Index';
+import API from '@/api';
+import store from '@/store';
 
 Vue.use(VueRouter);
+
+import admin from './admin';
+
+import Index from '@/views/Index';
+
 
 const routes = [
     {
@@ -12,6 +18,8 @@ const routes = [
         name: 'index',
     }
 ];
+
+routes.push(...admin);
 
 const router = new VueRouter({
     routes,

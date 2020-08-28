@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 
 var env = {
 
@@ -10,8 +10,8 @@ var env = {
     },
 };
 
-// env.API = axios.create({
-//     baseURL: process.env['VUE_APP_API_URL'],
-// });
+env.API = axios.create({
+    baseURL: process.env['VUE_APP_API_URL'],
+});
 
 export default env;
