@@ -1,20 +1,10 @@
 <template>
-  <main>
-    <transition
-        name="change"
-        mode="out-in"
-    >
-        <router-view/>
-    </transition>
-  </main>
+  <router-view />
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

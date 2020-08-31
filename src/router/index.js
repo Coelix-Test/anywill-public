@@ -1,28 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import API from '@/api';
+import { AuthAPI } from '@/api';
 import store from '@/store';
 
 Vue.use(VueRouter);
 
-import admin from './admin';
+import admin from './admin/admin.router';
 
 import Index from '@/views/Index';
 
 
 const routes = [
-    {
-        path: '/',
-        component: Index,
-        name: 'index',
-    }
+	{
+		path: '/',
+		component: Index,
+		name: 'index',
+	},
+	admin,
 ];
 
-routes.push(...admin);
-
 const router = new VueRouter({
-    routes,
+	mode: 'history',
+	routes,
 });
 
 export default router;

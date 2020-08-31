@@ -2,7 +2,7 @@ import Services from '@/views/admin/services/Services.vue';
 import ServicesCreate from '@/views/admin/services/Create';
 
 export default {
-    path: '/services',
+    path: 'services',
     component: Services,
     children: [
         {
