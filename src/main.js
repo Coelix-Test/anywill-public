@@ -8,6 +8,7 @@ import '@/config/preferences';
 import '@/styles/app.scss'
 
 import 'vuesax/dist/vuesax.css' //Vuesax styles
+import 'boxicons/css/boxicons.min.css' //Boxicons styles
 
 import store from './store';
 import router from './router';

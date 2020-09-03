@@ -1,7 +1,11 @@
 
 export default {
   namespaced: true,
-  state: {},
+  state: {
+    name: '',
+    gallery: [],
+    rooms: [],
+  },
   mutations: {},
   actions: {},
   getters: {}
