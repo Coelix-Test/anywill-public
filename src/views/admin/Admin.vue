@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <navigation />
+  <div id="content">
+    <!-- <navigation /> -->
+    <sidebar/>
     <transition
       name="cool"
       mode="out-in"
@@ -14,15 +15,23 @@
 </template>
 
 <script>
-import Navigation from '@/components/common/Navigation.vue';
+import Navigation from '@/components/common/Navigation';
+import Sidebar from '@/components/common/Sidebar';
+
 export default {
   components: {
     Navigation,
+    Sidebar,
   }
 }
 </script>
 
 <style lang="scss" scoped>
+#wrapper{
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-height: 100%;
+}
 #content {
   padding-top: 45px;
   width: 900px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="u-margin-20">Create Cemetery</h1>
+    <h1 class="u-margin-20">Edit Cemetery </h1>
     <div class="u-margin-20">
       <vs-input class="block" v-model="name" label="Name" />
     </div>
@@ -37,11 +37,10 @@
     />
 
     <div class="u-flex is-justify-center u-padding-20">
-      <vs-button @click="create">
-        Create Cemetery
+      <vs-button @click="update">
+        Update Cemetery
       </vs-button>
     </div>
-
   </div>
 </template>
 
@@ -76,11 +75,32 @@ export default {
     ],
 
   }),
+  computed: {
+    id(){
+      return this.$route.params.id;
+    }
+  },
   components: {
     CemeteryOptions,
   },
   methods: {
-    create(){
+    getCemetery(){
+      CemeteriesApi.get(this.id)
+      .then(data => {
+        let post = data.data;
+
+        this.name = post.name;
+        this.type = post.type;
+        //coordinates, media
+        this.classifications = post.classifications.map(el => el.id);
+        this.options = post.options.map(el => ({
+          option_id: el.id,
+          commission: 200,
+        }));
+        
+      });
+    },
+    update(){
       const postData = {
         name: this.name,
         type: this.type,
@@ -89,10 +109,13 @@ export default {
         options: this.options,
         media: this.media,
       };
-      CemeteriesApi.create(JSON.stringify(postData));
-      
+      CemeteriesApi.update(this.id, JSON.stringify(postData));
     }
   },
+  mounted(){
+    this.getCemetery();
+  }
+
 }
 </script>
 

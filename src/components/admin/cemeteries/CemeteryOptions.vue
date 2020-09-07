@@ -4,7 +4,7 @@
       <template #thead>
         <vs-tr>
           <!-- <vs-th>Name</vs-th> -->
-          <vs-th>Commition</vs-th>
+          <vs-th>Commission</vs-th>
           <vs-th>Actions</vs-th>
         </vs-tr>
       </template>
@@ -18,7 +18,7 @@
             {{ option.name }}
           </vs-td> -->
           <vs-td>
-            {{ option.commition }}
+            {{ option.commission }}
           </vs-td>
           <vs-td>
             <div class="u-flex">
