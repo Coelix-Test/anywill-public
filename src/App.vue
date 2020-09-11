@@ -5,7 +5,18 @@
 <script>
 
 export default {
-  
+  methods: {
+    setWindowWidth(){
+      this.$store.commit('WindowWidth/setWindowWidth');
+    }
+  },
+  created(){
+    console.log('Main component created');
+    window.addEventListener(
+      'resize',
+      this.setWindowWidth
+    );
+  }
 }
 </script>
 

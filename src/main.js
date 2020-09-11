@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuesax from 'vuesax';
+import Lodash from 'lodash'; window._ = Lodash;
 
 import App from './App.vue';
 
@@ -8,6 +9,7 @@ import '@/config/preferences';
 import '@/styles/app.scss'
 
 import 'vuesax/dist/vuesax.css' //Vuesax styles
+import 'material-icons/iconfont/material-icons.css'; //material icons used by vuesax
 import 'boxicons/css/boxicons.min.css' //Boxicons styles
 
 import store from './store';

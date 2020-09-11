@@ -2,8 +2,10 @@ import env from "../config/env"
 
 export default {
 
-  getAll(data){
-    return env.API.get('/cemeteries', data);
+  getPage(params){
+    return env.API.get('/cemeteries', {
+      params: params
+    });
   },
 
   create(data){
