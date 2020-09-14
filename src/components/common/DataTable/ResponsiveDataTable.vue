@@ -1,79 +1,78 @@
 <template>
-  <data-table
-    :sst="true"
-    :data="data"
-    @search="handleSearch"
-    @change-page="handleChangePage"
-    search
-    pagination
-    :paginationMax="paginationMax"
-    max-items="15"
-    :total="totalItems"
-    class="c-responsive-data-table"
-  >
-   
-    <template slot="thead">
-      <vs-th
-        :key="index"
-        v-for="(colName, index) in displayColumns"
+  <div>
+    <v-card>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          @input="debouncedSearch"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="displayColumns"
+        :items="data"
+        item-key="id"
+        :items-per-page="15"
+        class=""
+        mobile-breakpoint="1"
+        hide-default-footer
+        disable-sort
+        show-expand
+        dense
       >
-        {{ columns[colName].label }}
-      </vs-th>
-    </template>
-    <template slot-scope="{data}">
-      <data-table-row
-        v-for="dataItem in data"
-        :key="dataItem.id"
-        :data="dataItem"
-      >
-        
-        <vs-td 
-        v-for="(colName, colIndex) in displayColumns"
-        :key="colIndex"
+        <template 
+          v-slot:expanded-item="{ headers, item }"
         >
-          {{ dataItem[colName] }}
-        </vs-td>
-        <template slot="expand">
-          <div class="u-w-100">
-            <vs-list v-if="hideColumns.length">
-              <vs-list-item 
-                v-for="(colName, colIndex) in hideColumns"
-                :key="colIndex"
-                :title="columns[colName].label"
-                :subtitle="dataItem[colName]"
-              />
-            </vs-list>
-            <slot name="expand" v-bind="dataItem"></slot>
-          </div>
+          
+          <td :colspan="headers.length">
+            <ul class="pa-2 expand-list" v-if="hideColumns.length">
+              <li 
+                v-for="column in hideColumns"
+                :key="column.value"
+              >
+                <strong>{{column.text}} : </strong>           
+                {{ item[column.value] }}
+              </li>
+            </ul>
+            <div>
+              <v-btn color="primary" class="ma-2">
+                <v-icon left>mdi-pencil</v-icon>Edit
+              </v-btn>
+              <v-btn color="error" class="ma-2">
+                <v-icon left>mdi-delete</v-icon>Delete
+              </v-btn>
+            </div>
+          </td>
         </template>
-      </data-table-row>
-    </template>
-  </data-table>
+      </v-data-table>
+    </v-card>
+    <v-pagination
+      v-model="page"
+      :length="paginationLength"
+      :total-visible="7"
+      class="mt-5"
+      @input="handleChangePage"
+    />
+  </div>
 </template>
 
 <script>
-import DataTable from '@/components/common/DataTable/DataTable.vue';
-import DataTableRow from '@/components/common/DataTable/DataTableRow.vue';
 
 export default {
   components: {
-    DataTable,
-    DataTableRow
   },
   data: () => ({
+    search: '',
+    page: 1,
     displayColumns: [],
     hideColumns: [],
-    responsivePaginationMax: 9,
   }),
   computed: {
-    //max number of pagination elements to show
-    paginationMax(){
-      const maxPages = Math.ceil(this.totalItems / 15);
-      let result = Math.min(maxPages, this.responsivePaginationMax);
-      if(result > 2 && (result % 2 === 0) ){
-        result--;
-      }
-      return result;
+    paginationLength(){
+      return Math.ceil(this.totalItems / 15);
     },
   },
   props: {
@@ -86,38 +85,42 @@ export default {
       default: 0
     },
     columns: {
-      type: Object,
-      default: {}
+      type: Array,
+      default: []
     }
   },
   methods: {
     resize(){
-      //console.log(document.documentElement.clientWidth);
+      console.log(document.documentElement.clientWidth);
       this.displayColumns.splice(0); 
       this.hideColumns.splice(0);
 
-      for(const colName in this.columns){
-        if (this.columns[colName].breakpoint && window.matchMedia("(max-width: "+this.columns[colName].breakpoint+"px)").matches) {
-          this.hideColumns.push(colName);
+      this.columns.forEach(column => {
+        if (column.breakpoint && window.matchMedia("(max-width: "+column.breakpoint+"px)").matches) {
+          this.hideColumns.push(column);
         }
         else{
-          this.displayColumns.push(colName);
+          this.displayColumns.push(column);
         }
-      }
-
-      if(window.matchMedia("(max-width: 768px").matches){
-        this.responsivePaginationMax = 7;
-      }
-      else{
-        this.responsivePaginationMax = 9;
-      }
+      });
     },
     handleSearch(search){
       this.$emit('search', search);
+      this.$emit('update', {
+        page: this.page,
+        search: this.search
+      });
     },
     handleChangePage(page){
       this.$emit('change-page', page);
+      this.$emit('update', {
+        page: this.page,
+        search: this.search
+      });
     },
+  },
+  created() {
+    this.debouncedSearch = _.debounce(this.handleSearch, 500);
   },
   mounted(){
     window.addEventListener('resize', this.resize);
@@ -130,15 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.c-responsive-data-table::v-deep{
-  .vs-table--pagination{
-    justify-content: center;
-  }
-  .vs-pagination--mb{
-    width: auto !important;
-  }
-  .vs-table--header{
-    padding: 7px;
-  }
+.expand-list{
+  list-style-type: none;
 }
 </style>

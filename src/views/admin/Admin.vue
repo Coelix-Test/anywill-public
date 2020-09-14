@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+  <div id="content" class="v-application">
     <navigation />
     <sidebar/>
     <transition

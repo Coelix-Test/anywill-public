@@ -3,85 +3,67 @@
     <h2 class="u-margin-20">All cemeteries</h2>
     <responsive-data-table
       :data="data"
-      :totalItems="totalItems"
       :columns="columns"
-      @change-page="handleChangePage"
-      @search="handleSearch"
+      :totalItems="totalItems"
+      @update="getCemeteries"
     >
-      <template v-slot:expand="cemetery">
-        <div class="u-flex actions">
-          <vs-button
-            color="danger"
-            @click="deleteCemetery(cemetery.id)"
-            icon="delete"
-          >
-          </vs-button>
-          <vs-button 
-            icon="edit"
-            :to="{ name: 'cemetery-edit', params: { id: cemetery.id }}"
-          />
-        </div>
-      </template>
     </responsive-data-table>
   </div>
 </template>
 
 <script>
 import { CemeteriesApi } from '@/api';
-import DataTable from '@/components/common/DataTable/DataTable.vue';
 import ResponsiveDataTable from '@/components/common/DataTable/ResponsiveDataTable.vue';
+
 
 export default {
   components: {
-    DataTable,
-    ResponsiveDataTable
+    ResponsiveDataTable,
   },
   data: () => ({
-    search: '',
     data: [],
     totalItems: 0,
-    page: 1,
-    search: '',
-    columns: {
-      name: {
-        // name: 'name',
-        label: 'Name',
-        breakpoint: false
+    columns: [
+      {
+        value: 'name',
+        text: 'Name',
+        breakpoint: false,
+        align: 'start',
       },
-      phone: {
-        // name: 'phone',
-        label: 'Phone',
+      {
+        value: 'phone',
+        text: 'Phone',
         breakpoint: 568
       },
-      address: {
-        // name: 'address',
-        label: 'Address',
+      {
+        value: 'address',
+        text: 'Address',
         breakpoint: 1024
       },
-    },
-    displayColumns: ['name', 'address', 'phone'],
-    hideColumns: ['address', 'phone'],
+    ],
   }),
   computed: {
     
   },
   methods: {
-    getCemeteries(){
+    getCemeteries({ page, search }){
+      console.log('page:', page, ' search:', search);
       CemeteriesApi.getPage({
-        page: this.page,
-        search: this.search
+        page: page,
+        search: search
       })
       .then(data => {
 
         this.data.splice(0);
         data.data.data.forEach((item, index) => {
+          
           item.address = 'Pushkinskaya 34, Odessa, Ukraine';
           item.phone = '+38(012)3456789';
           item.id = item.private_id;
           delete item.private_id;
           // this.cemeteries.push(item);
           // this.$set(this.data, index, item);
-          this.$set(this.data, (this.page - 1) * 15 + index, item);
+          this.$set(this.data, index, item);
         });
         this.totalItems = data.data.total;
 
@@ -107,7 +89,7 @@ export default {
     },
   },
   mounted(){
-    this.getCemeteries(1);
+    this.getCemeteries({ page: 1, search: ''});
   },
 }
 </script>
