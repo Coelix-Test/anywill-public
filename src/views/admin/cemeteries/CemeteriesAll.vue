@@ -10,7 +10,6 @@
     >
       <template v-slot:expand="cemetery">
         <div class="u-flex actions">
-          {{cemetery.id}}
           <vs-button
             color="danger"
             @click="deleteCemetery(cemetery.id)"
@@ -81,6 +80,7 @@ export default {
           item.id = item.private_id;
           delete item.private_id;
           // this.cemeteries.push(item);
+          // this.$set(this.data, index, item);
           this.$set(this.data, (this.page - 1) * 15 + index, item);
         });
         this.totalItems = data.data.total;

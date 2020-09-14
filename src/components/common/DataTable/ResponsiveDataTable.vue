@@ -1,12 +1,12 @@
 <template>
-  <vs-table
+  <data-table
     :sst="true"
     :data="data"
     @search="handleSearch"
     @change-page="handleChangePage"
     search
     pagination
-    :paginationMax="7"
+    :paginationMax="paginationMax"
     max-items="15"
     :total="totalItems"
     class="c-responsive-data-table"
@@ -48,7 +48,7 @@
         </template>
       </data-table-row>
     </template>
-  </vs-table>
+  </data-table>
 </template>
 
 <script>
@@ -63,7 +63,19 @@ export default {
   data: () => ({
     displayColumns: [],
     hideColumns: [],
+    responsivePaginationMax: 9,
   }),
+  computed: {
+    //max number of pagination elements to show
+    paginationMax(){
+      const maxPages = Math.ceil(this.totalItems / 15);
+      let result = Math.min(maxPages, this.responsivePaginationMax);
+      if(result > 2 && (result % 2 === 0) ){
+        result--;
+      }
+      return result;
+    },
+  },
   props: {
     data: {
       type: Array,
@@ -91,6 +103,13 @@ export default {
         else{
           this.displayColumns.push(colName);
         }
+      }
+
+      if(window.matchMedia("(max-width: 768px").matches){
+        this.responsivePaginationMax = 7;
+      }
+      else{
+        this.responsivePaginationMax = 9;
       }
     },
     handleSearch(search){

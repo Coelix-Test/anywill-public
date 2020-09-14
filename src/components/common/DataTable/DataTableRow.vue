@@ -41,7 +41,8 @@ export default {
     colspan:0,
     expanded: false,
     maxHeight:'0px',
-    activeEdit: false
+    activeEdit: false,
+    instanceExpand: null,
   }),
   computed:{
     styleExpand () {
@@ -69,7 +70,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$slots.expand);
     this.$nextTick(() => {
       this.colspan = this.$parent.$refs.thead.querySelectorAll('th').length
       if (this.$slots.expand) {
@@ -81,8 +81,10 @@ export default {
     if(this.$slots.expand) this.$parent.hasExpadableData = true
   },
   beforeDestroy(){
-    this.collapseExpandedData();
-    console.log('wow');
+    if(this.instanceExpand){
+      this.instanceExpand.$el.parentNode.removeChild(this.instanceExpand.$el);
+      this.instanceExpand.$destroy();
+    }
   },
   methods:{
     handleCheckbox() {
@@ -106,27 +108,28 @@ export default {
     },
     clicktd (evt) {
       if(this.$parent.multiple || !this.$slots.expand) return
-      let tr = evt.target.closest('tr')
+      let tr = evt.target.closest('tr');
       if(this.expanded) {
-        tr.parentNode.removeChild(tr.nextSibling)
-        tr.classList.remove('tr-expandedx')
-        this.expanded = false
+        tr.parentNode.removeChild(tr.nextSibling);
+        tr.classList.remove('tr-expandedx');
+        this.expanded = false;
       } else {
         tr.classList.add('tr-expandedx')
         let trx = Vue.extend(trExpand);
-        let instance = new trx({parent: this, propsData: {colspan: this.colspan}});
-        instance.vm = instance.$mount();
-        var newTR = document.createElement('tr').appendChild(instance.vm.$el);
-        this.insertAfter(tr, newTR)
-        this.expanded = true
+        this.instanceExpand = new trx({parent: this, propsData: {colspan: this.colspan}});
+        this.instanceExpand.$slots.default = this.$slots.expand;
+        this.instanceExpand.vm = this.instanceExpand.$mount();
+        var newTR = document.createElement('tr').appendChild(this.instanceExpand.vm.$el);
+        this.insertAfter(tr, newTR);
+        this.expanded = true;
       }
     },
     collapseExpandedData() {
       if(this.expanded){
-        const tr = this.$refs.tableTr
-        tr.parentNode.removeChild(tr.nextSibling)
-        tr.classList.remove('tr-expandedx')
-        this.expanded = false
+        const tr = this.$refs.tableTr;
+        tr.parentNode.removeChild(tr.nextSibling);
+        tr.classList.remove('tr-expandedx');
+        this.expanded = false;
       }
     }
   }

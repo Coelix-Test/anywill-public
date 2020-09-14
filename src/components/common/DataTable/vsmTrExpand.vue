@@ -39,7 +39,7 @@ export default {
     active: false
   }),
   mounted() {
-    this.active = true
+    this.active = true;
   }
 }
 </script>
