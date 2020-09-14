@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuesax from 'vuesax';
-import Lodash from 'lodash'; window._ = Lodash;
+import Lodash from 'lodash';window._ = Lodash;
 
 import App from './App.vue';
 
@@ -14,6 +14,7 @@ import 'boxicons/css/boxicons.min.css' //Boxicons styles
 
 import store from './store';
 import router from './router';
+import vuetify from './plugins/vuetify';
 
 Vue.use(Vuesax);
 
@@ -22,5 +23,6 @@ Vue.config.productionTip = false;
 window.app = new Vue({
   store,
   router,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
