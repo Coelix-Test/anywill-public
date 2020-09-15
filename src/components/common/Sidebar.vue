@@ -1,62 +1,81 @@
 <template>
-  <vs-sidebar
-    class="c-admin-sidebar"
-    :value="isActive"
-    @input="sidebarToggle"
-    :hidden-background="!isMobile"
-    :default-index="currentRouteName"
-    parent="body"
-    color="white"
+  <v-navigation-drawer
+    v-model="active"
+    :temporary="isMobile"
+    dark
+    app
+    disable-resize-watcher
+    mobile-breakpoint="0"
   >
-    <div class="u-flex is-justify-center" slot="header">
+    <div class="u-flex is-justify-center ma-4">
       <img src="@/assets/logo.png" alt="" width="32px">
     </div>
-
-    <vs-sidebar-item 
-      :to="{ name: 'cemeteries-all' }" 
-      index="cemeteries-all"
-      icon="location_city"
-    >
-      Cemeteries
-    </vs-sidebar-item>
-    <vs-sidebar-item 
-      :to="{ name: 'services-create' }"
-      index="services-create"
-      icon="list"
-    >
-      Services
-    </vs-sidebar-item>
-    <vs-sidebar-item 
-      :to="{ name: 'funeral-homes-create' }" 
-      index="funeral-homes-create"
-      icon="location_city"
-    >
-      Funeral Homes
-    </vs-sidebar-item>
-  </vs-sidebar>
+    <v-list>
+      <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          link
+          :to="item.route"
+        >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
 export default {
   data: () => ({
-    active: true,
+    active: null,
+    items: [
+      {
+        icon: 'mdi-grave-stone',
+        text: 'Cemeteries',
+        route: { name: 'cemeteries-all' }
+      },
+      {
+        icon: 'mdi-church',
+        text: 'Funeral Homes',
+        route: { name: 'funeral-homes-all' }
+      },
+      {
+        icon: 'mdi-flask',
+        text: 'Laboratories',
+        route: { name: 'laboratories-all' }
+      },
+      {
+        icon: 'mdi-buffer',
+        text: 'Services',
+        route: { name: 'services-all' }
+      },
+    ]
   }),
   computed: {
-    currentRouteName() {
-      return this.$route.name;
-    },
-    isActive(){
-      const isActive = this.$store.getters['Sidebar/isActive'];
-      return ( !this.isMobile || isActive );
+    isActive() {
+      let isActive = this.$store.getters['Sidebar/isActive'];
+      return ( !this.isMobile || isActive ); //always visible on desktop  
     },
     isMobile(){
       return this.$store.getters['WindowWidth/getWidth'] <= 1024;
     }
   },
+  watch: {
+    isActive(){
+      this.active = this.isActive;
+    }
+  },
   methods: {
     sidebarToggle(){
       this.$store.commit('Sidebar/toggle');
-    }
+    },
+  },
+  mounted(){
+    this.active = this.isActive;
   }
 }
 </script>

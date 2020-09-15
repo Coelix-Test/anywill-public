@@ -1,28 +1,29 @@
 <template>
-  <vs-navbar 
-    color="dark"
-    text-color="#ffffff"
-    class="header"
-  >
-      <div slot="title" >
-        <vs-button 
-          icon="menu" 
-          class="sidebar-trigger"
-          type="flat"
-          color="#ffffff"
-          @click="openSidebar"
-        />
-        
-      </div>
-      
-    </vs-navbar>
-</template>
+  <v-app-bar
+      color="deep-dark"
+      v-if="isMobile"
+      dense
+      dark
+      app
+    >
+      <v-app-bar-nav-icon
+        @click="toggleSidebar">
+      </v-app-bar-nav-icon>
+    </v-app-bar>
+  
+</template> 
 
 <script>
 export default {
   methods: {
-    openSidebar(){
+    toggleSidebar(){
       this.$store.commit('Sidebar/toggle');
+      console.log('wow');
+    }
+  },
+  computed: {
+    isMobile(){
+      return this.$store.getters['WindowWidth/getWidth'] <= 1024;
     }
   }
 }

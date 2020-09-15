@@ -1,8 +1,9 @@
 import Admin from '@/views/admin/Admin';
 
-// import services from './services.router';
-// import funeralHomes from './funeral-homes.router';
 import cemeteries from './cemetery.router';
+import funeralHomes from './funeral-homes.router';
+import laboratories from './laboratories.router';
+import services from './services.router';
 import tests from './tests.router';
 
 const routes = {
@@ -10,9 +11,10 @@ const routes = {
   component: Admin,
   name: 'admin',
   children: [
-    // services,
-    // funeralHomes,
     cemeteries,
+    funeralHomes,
+    laboratories,
+    services,
     tests
   ]
 };

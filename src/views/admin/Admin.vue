@@ -1,17 +1,21 @@
 <template>
-  <div id="content" class="v-application">
-    <navigation />
+  <v-app id="content">
     <sidebar/>
+    <navigation />
     <transition
       name="cool"
       mode="out-in"
     >
-      <router-view 
+      <v-main 
         id="content"
         class="is-admin"
-      />
+      >
+        <v-container fluid>
+          <router-view></router-view>
+        </v-container>
+      </v-main>
     </transition>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -29,21 +33,21 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/mixins';
 
-#wrapper{
-  margin-left: 260px;
-  width: calc(100% - 260px);
-  min-height: 100%;
-  @include media('<=desktop'){
-    width: 100%;
-    margin-left: 0;
-  }
-}
+// #wrapper{
+//   margin-left: 260px;
+//   width: calc(100% - 260px);
+//   min-height: 100%;
+//   @include media('<=desktop'){
+//     width: 100%;
+//     margin-left: 0;
+//   }
+// }
 
 
 #content {
-  width: 100%;
-  margin: 0 auto;
-  padding: 4.5rem 2.5rem 2rem 2.5rem;
+  // width: 100%;
+  // margin: 0 auto;
+  // padding: 4.5rem 2.5rem 2rem 2.5rem;
   @include media('<=tablet'){
     padding: 1rem;
   }

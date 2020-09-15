@@ -1,7 +1,7 @@
 import Cemeteries from '@/views/admin/cemeteries/Cemeteries';
-// import CemeteriesCreate from '@/views/admin/cemeteries/Create';
-// import CemeteryEdit from '@/views/admin/cemeteries/CemeteryEdit';
-import CemeteriesAll from '@/views/admin/cemeteries/CemeteriesAll';
+// import SingleCreate from '@/views/admin/cemeteries/SingleCreate';
+// import SingleEdit from '@/views/admin/cemeteries/SingleEdit';
+import ListAll from '@/views/admin/cemeteries/ListAll';
 
 export default {
   path: 'cemeteries',
@@ -9,17 +9,17 @@ export default {
   children: [
     {
       path: 'all',
-      component: CemeteriesAll,
+      component: ListAll,
       name: 'cemeteries-all',
     },
     // {
     //   path: ':id',
-    //   component: CemeteryEdit,
-    //   name: 'cemetery-edit',
+    //   component: SingleEdit,
+    //   name: 'cemeteries-edit',
     // },
     // {
     //   path: 'create',
-    //   component: CemeteriesCreate,
+    //   component: SingleCreate,
     //   name: 'cemeteries-create',
     // },
   ]

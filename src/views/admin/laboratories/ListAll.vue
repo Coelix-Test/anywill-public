@@ -1,18 +1,18 @@
 <template>
   <div>
-    <h2 class="u-margin-20">All cemeteries</h2>
+    <h2 class="u-margin-20">All Laboratories</h2>
     <responsive-data-table
       :data="data"
       :columns="columns"
       :totalItems="totalItems"
-      @update="getCemeteries"
+      @update="getPage"
     >
     </responsive-data-table>
   </div>
 </template>
 
 <script>
-import { CemeteriesApi } from '@/api';
+import { LaboratoriesApi } from '@/api';
 import ResponsiveDataTable from '@/components/common/DataTable/ResponsiveDataTable.vue';
 
 
@@ -46,9 +46,9 @@ export default {
     
   },
   methods: {
-    getCemeteries({ page, search }){
+    getPage({ page, search }){
       console.log('page:', page, ' search:', search);
-      CemeteriesApi.getPage({
+      LaboratoriesApi.getPage({
         page: page,
         search: search
       })
@@ -72,14 +72,14 @@ export default {
     handleSearch(search){
       this.search = search;
       this.page = 1;
-      this.getCemeteries();
+      this.getPage();
     },
     handleChangePage(page){
       this.page = page;
-      this.getCemeteries();
+      this.getPage();
     },
-    deleteCemetery(id){
-      CemeteriesApi.delete(id)
+    deleteItem(id){
+      LaboratoriesApi.delete(id)
       .then(response => {
         if(response.data === 1){
           this.data = this.data.filter(el => id !== el.id);
@@ -89,7 +89,7 @@ export default {
     },
   },
   mounted(){
-    this.getCemeteries({ page: 1, search: ''});
+    this.getPage({ page: 1, search: ''});
   },
 }
 </script>

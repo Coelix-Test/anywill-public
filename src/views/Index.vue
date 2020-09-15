@@ -1,7 +1,7 @@
 <template>
   <div>
     Vue router test
-    <router-link :to="{ name: 'services-create' }" > Create service </router-link>
+    <router-link :to="{ name: 'cemeteries-all' }" > Cemeteries All </router-link>
   </div>
 </template>
 
