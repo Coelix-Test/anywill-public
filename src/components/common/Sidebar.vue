@@ -32,6 +32,8 @@
 export default {
   data: () => ({
     active: null,
+    desktopState: true,
+    mobileState: false,
     items: [
       {
         icon: 'mdi-grave-stone',
@@ -57,25 +59,53 @@ export default {
   }),
   computed: {
     isActive() {
-      let isActive = this.$store.getters['Sidebar/isActive'];
-      return ( !this.isMobile || isActive ); //always visible on desktop  
+      return this.$store.getters['Sidebar/isActive'];
     },
     isMobile(){
       return this.$store.getters['WindowWidth/getWidth'] <= 1024;
     }
   },
   watch: {
+    isMobile(){
+      // console.log('switched to ', this.isMobile ? 'mobile' : 'desktop', ' mode');
+      if(this.isMobile){
+        //switched to mobile mode
+        this.sidebarHide();
+      }
+      else{
+        //switched to desktop mode
+        this.sidebarShow();
+      }
+    },
     isActive(){
+      //sidebar state in vuex has changed
       this.active = this.isActive;
+    },
+    active(){
+      if(this.isActive !== this.active){
+        this.sidebarToggle();
+      }
     }
   },
   methods: {
     sidebarToggle(){
       this.$store.commit('Sidebar/toggle');
     },
+    sidebarHide(){
+      this.$store.commit('Sidebar/hide');
+    },
+    sidebarShow(){
+      this.$store.commit('Sidebar/show');
+    },
   },
   mounted(){
-    this.active = this.isActive;
+    if(this.isMobile){
+      this.sidebarHide();
+    }
+    else{
+      this.sidebarToggle();
+    }
+    this.active = this.isMobile ? false : true;
   }
 }
 </script>
@@ -83,17 +113,4 @@ export default {
 <style lang="scss" scoped>
 
 @import '@/styles/vars';
-
-.c-admin-sidebar::v-deep{
-  .vs-sidebar{
-    background: rgb(var(--vs-dark));
-  }
-  .vs-sidebar--item a,
-  .vs-sidebar-item-active a{
-    color: #fff;
-  }
-  .vs-sidebar-item-active{
-    border-right: 3px solid #fff;
-  }
-}
 </style>

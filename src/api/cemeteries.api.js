@@ -22,5 +22,13 @@ export default {
 
   delete(id){
     return env.API.delete('/cemeteries/' + id);
+  },
+
+  getTypes(){
+    return env.API.get('/cemetery-types');
+  },
+  
+  getClassifications(){
+    return env.API.get('/cemetery-classifications');
   }
 }

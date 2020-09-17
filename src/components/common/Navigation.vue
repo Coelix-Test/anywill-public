@@ -18,7 +18,6 @@ export default {
   methods: {
     toggleSidebar(){
       this.$store.commit('Sidebar/toggle');
-      console.log('wow');
     }
   },
   computed: {

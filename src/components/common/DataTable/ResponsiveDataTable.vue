@@ -37,14 +37,7 @@
                 {{ item[column.value] }}
               </li>
             </ul>
-            <div>
-              <v-btn color="primary" class="ma-2">
-                <v-icon left>mdi-pencil</v-icon>Edit
-              </v-btn>
-              <v-btn color="error" class="ma-2">
-                <v-icon left>mdi-delete</v-icon>Delete
-              </v-btn>
-            </div>
+            <slot name="expand" :item="item"></slot>
           </td>
         </template>
       </v-data-table>
@@ -91,7 +84,7 @@ export default {
   },
   methods: {
     resize(){
-      console.log(document.documentElement.clientWidth);
+      // console.log(document.documentElement.clientWidth);
       this.displayColumns.splice(0); 
       this.hideColumns.splice(0);
 

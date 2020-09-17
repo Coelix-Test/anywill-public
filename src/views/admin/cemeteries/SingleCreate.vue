@@ -1,6 +1,11 @@
+<!-- 
+TODO:  
+- Adding services
+- Redirect to single edit
+-->
 <template>
   <div>
-    <h1 class="u-margin-20">Edit Cemetery </h1>
+    <h1 class="u-margin-20">Create Cemetery</h1>
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
@@ -37,60 +42,34 @@
             </v-autocomplete>
         </v-col>
         <v-col cols="12" md="2" offset-md="5">
-          <v-btn dark block @click="updateSingle">Update</v-btn>
+          <v-btn dark block @click="createSingle">Create</v-btn>
         </v-col>
       </v-row>
     </v-container>
+
   </div>
 </template>
 
 <script>
 import { CemeteriesApi } from '@/api';
 
-import CemeteryOptions from '@/components/admin/cemeteries/CemeteryOptions.vue';
-
 export default {
   data: () => ({
-    name: '',
-    type: 0,
+    name: 'Cemetery 1',
+    type: 1,
     classifications: [],
     coordinates: ["json"],
-    options : [
-      {option_id: 1, commission: 20},
-      {option_id: 2, commission: 0},
-    ],
+    options : [],
     media: [1,2],
 
     typeOptions: [],
     classificationsOptions: [],
 
   }),
-  computed: {
-    id(){
-      return this.$route.params.id;
-    }
-  },
   components: {
-    CemeteryOptions,
   },
   methods: {
-    getCemetery(){
-      CemeteriesApi.get(this.id)
-      .then(data => {
-        let post = data.data;
-
-        this.name = post.name;
-        this.type = post.type;
-        //coordinates, media
-        this.classifications = post.classifications.map(el => el.id);
-        this.options = post.options.map(el => ({
-          option_id: el.id,
-          commission: 200,
-        }));
-        
-      });
-    },
-    updateSingle(){
+    createSingle(){
       const postData = {
         name: this.name,
         type: this.type,
@@ -99,7 +78,8 @@ export default {
         options: this.options,
         media: this.media,
       };
-      CemeteriesApi.update(this.id, JSON.stringify(postData));
+      CemeteriesApi.create(JSON.stringify(postData));
+      
     },
     getTypeOptions(){
       CemeteriesApi.getTypes().then(response => this.typeOptions = response.data);
@@ -111,9 +91,7 @@ export default {
   mounted(){
     this.getTypeOptions();
     this.getClassificationsOptions();
-    this.getCemetery();
   }
-
 }
 </script>
 

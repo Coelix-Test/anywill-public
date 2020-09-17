@@ -7,7 +7,35 @@
       :totalItems="totalItems"
       @update="getPage"
     >
+      <template v-slot:expand="{ item }">
+        <div>
+          <v-btn 
+            color="primary" 
+            class="ma-2"
+            :to="{name: 'cemeteries-edit', params: {id: item.id}}"
+          >
+            <v-icon left>mdi-pencil</v-icon>Edit
+          </v-btn>
+          <v-btn color="error" class="ma-2" @click="deleteItem(item.id)">
+            <v-icon left>mdi-delete</v-icon>Delete
+          </v-btn>
+        </div>
+      </template>
     </responsive-data-table>
+    <v-fab-transition>
+      <v-btn
+        color="green"
+        fab
+        dark
+        large
+        fixed
+        bottom
+        right
+        :to="{name: 'cemeteries-create'}"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </div>
 </template>
 

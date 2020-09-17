@@ -1,11 +1,17 @@
 export default {
   namespaced: true,
   state: {
-    active: false,
+    active: null,
   },
   mutations: {
     toggle(state){
       state.active = !state.active;
+    },
+    show(state){
+      state.active = true;
+    },
+    hide(state){
+      state.active = false;
     }
   },
   actions: {},
