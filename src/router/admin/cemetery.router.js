@@ -13,14 +13,14 @@ export default {
       name: 'cemeteries-all',
     },
     {
-      path: ':id',
-      component: SingleEdit,
-      name: 'cemeteries-edit',
-    },
-    {
       path: 'create',
       component: SingleCreate,
       name: 'cemeteries-create',
+    },
+    {
+      path: ':id',
+      component: SingleEdit,
+      name: 'cemeteries-edit',
     },
   ]
 }

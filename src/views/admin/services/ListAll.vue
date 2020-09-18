@@ -22,6 +22,20 @@
         </div>
       </template>
     </responsive-data-table>
+    <v-fab-transition>
+      <v-btn
+        color="green"
+        fab
+        dark
+        large
+        fixed
+        bottom
+        right
+        :to="{name: 'services-create'}"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </div>
 </template>
 

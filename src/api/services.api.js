@@ -22,5 +22,9 @@ export default {
 
   delete(id){
     return env.API.delete('/services/' + id);
+  },
+
+  getOptionInputTypes(){
+    return env.API.get('/input-types');
   }
 }
