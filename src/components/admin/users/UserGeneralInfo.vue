@@ -30,7 +30,7 @@
           :type="show1 ? 'text' : 'password'"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="show1 = !show1"
-          :rules="[rules.min, rules.passwordsMatch]"
+          :rules="[rules.min]"
         ></v-text-field>
       </v-col>
       <v-col cols="6">
@@ -40,7 +40,7 @@
           :type="show2 ? 'text' : 'password'"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="show2 = !show2"
-          :rules="[rules.min, rules.passwordsMatch]"
+          :rules="[rules.min]"
         ></v-text-field>
       </v-col>
     </v-row>

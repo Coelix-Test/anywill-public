@@ -87,7 +87,6 @@ export default {
           
           item.address = 'Pushkinskaya 34, Odessa, Ukraine';
           item.phone = '+38(012)3456789';
-          item.id = item.private_id;
           delete item.private_id;
           // this.cemeteries.push(item);
           // this.$set(this.data, index, item);

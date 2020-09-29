@@ -36,7 +36,7 @@ TODO:
         </v-col>
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title>Permissions</v-card-title>
+            <user-permissions></user-permissions>
           </v-card>
         </v-col>
         
@@ -48,9 +48,11 @@ TODO:
 
 <script>
 // import VueGoogleAutocomplete from 'vue-google-autocomplete';
-import { CemeteriesApi, ManagersApi } from '@/api';
+import { ManagersApi } from '@/api';
 
 import UserGeneralInfo from '@/components/admin/users/UserGeneralInfo';
+import UserPermissions from '@/components/admin/users/UserPermissions';
+import ContactPhoneList from '@/components/common/ContactPhone/ContactPhoneList';
 
 export default {
   data: () => ({
@@ -58,11 +60,13 @@ export default {
     leftTabActive: null,
     leftTabs: [
       { name: 'General Info', component: UserGeneralInfo,},
-      { name: 'Contact Info', component: UserGeneralInfo,},
+      { name: 'Contact Info', component: ContactPhoneList,},
     ],
   }),
   components: {
     UserGeneralInfo,
+    UserPermissions,
+    ContactPhoneList,
   },
   methods: {
     createSingle(){

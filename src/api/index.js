@@ -6,6 +6,7 @@ import EntitiesApi from './entities.api';
 import UsersApi from './users.api';
 import ManagersApi from './managers.api';
 import OrganizationsApi from './organizations.api';
+import PermissionsApi from './permissions.api'
 
 export default {
 
@@ -20,4 +21,5 @@ export {
     UsersApi,
     ManagersApi,
     OrganizationsApi,
+    PermissionsApi,
 }
