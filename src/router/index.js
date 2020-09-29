@@ -16,12 +16,13 @@ const routes = [
 		path: '/',
 		component: Index,
 		name: 'index',
+    redirect: {name: 'cemeteries-all'},
 	},
 	admin,
 ];
 
 const router = new VueRouter({
-	mode: 'history',
+	// mode: 'history',
 	routes,
 });
 

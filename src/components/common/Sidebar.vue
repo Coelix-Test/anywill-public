@@ -55,6 +55,11 @@ export default {
         text: 'Services',
         route: { name: 'services-all' }
       },
+      {
+        icon: 'mdi-account-tie',
+        text: 'Managers',
+        route: { name: 'managers-all' }
+      },
     ]
   }),
   computed: {

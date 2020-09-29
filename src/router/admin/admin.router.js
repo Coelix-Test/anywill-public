@@ -4,6 +4,7 @@ import cemeteries from './cemetery.router';
 import funeralHomes from './funeral-homes.router';
 import laboratories from './laboratories.router';
 import services from './services.router';
+import managers from './managers.router';
 import tests from './tests.router';
 
 const routes = {
@@ -15,7 +16,8 @@ const routes = {
     funeralHomes,
     laboratories,
     services,
-    tests
+    managers,
+    tests,
   ]
 };
 

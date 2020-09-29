@@ -18,6 +18,13 @@ import vuetify from './plugins/vuetify';
 
 Vue.use(Vuesax);
 
+import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
+ 
+Vue.use(VuetifyGoogleAutocomplete, {
+  apiKey: 'AIzaSyDSEfEOXfc0Ij_zoaa4JeG_w2cNievQM90',
+  language: 'en', // Optional
+});
+
 Vue.config.productionTip = false;
 
 window.app = new Vue({

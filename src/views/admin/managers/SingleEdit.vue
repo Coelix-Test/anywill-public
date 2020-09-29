@@ -1,11 +1,6 @@
-<!-- 
-TODO:  
-- Adding services
-- Redirect to single edit
--->
 <template>
   <div>
-    <h1 class="u-margin-20">Create Cemetery</h1>
+    <h1 class="u-margin-20">Update Cemetery</h1>
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
@@ -52,7 +47,7 @@ TODO:
           ></api-autocomplete>
           <api-autocomplete
             v-else 
-            v-model="user_id"
+            v-model="userId"
             label="Select owner"
             api-type="users"
           ></api-autocomplete>
@@ -69,7 +64,7 @@ TODO:
           <address-autocomplete :address.sync="address" v-model="addressComp"></address-autocomplete>
         </v-col>
         <v-col cols="12" md="2" offset-md="5">
-          <v-btn dark block @click="createSingle">Create</v-btn>
+          <v-btn dark block @click="createSingle">Update</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -86,18 +81,18 @@ import ApiAutocomplete from '@/components/common/ApiAutocomplete/ApiAutocomplete
 
 export default {
   data: () => ({
-    name: '124 Conch St, Holden Beach, NC 28462, USA',
-    type: 1,
-    classifications: [1],
+    name: '',
+    type: null,
+    classifications: [],
     options : [],
     media: [],
-    address: '124 Conch St, Holden Beach, NC 28462, USA',
+    address: '',
     addressComp: {},
-    managers: [2,1],
+    managers: [],
 
-    boundToOrganization: true,
-    user_id: 0,
-    organization: 2,
+    boundToOrganization: false,
+    userId: 0,
+    organization: 0,
     
 
     typeOptions: [],
@@ -133,11 +128,7 @@ export default {
       }
 
       console.log(JSON.stringify(postData));
-      CemeteriesApi.create(JSON.stringify(postData)).then(response => {
-        if(response.data.private_id){
-          this.$router.push({name: 'cemeteries-edit', params: { id: response.data.private_id} } );
-        }
-      });
+      CemeteriesApi.create(JSON.stringify(postData));
       
     },
     getTypeOptions(){
@@ -146,10 +137,46 @@ export default {
     getClassificationsOptions(){
       CemeteriesApi.getClassifications().then(response => this.classificationsOptions = response.data);
     },
+    getSingle(){
+      CemeteriesApi.getPage({
+        page: 1,
+        per_page: 100,
+      }).then(response => {
+        let current = response.data.data.find(item => item.private_id === this.$route.params.id);
+        console.log(current);
+
+        this.name = current.name;
+        this.type = current.type;
+        this.classifications = current.classifications.map(item => item.id);
+
+        //calc address components
+        // this.address = 
+
+        this.media = current.media;
+        
+        //cemetery options
+
+        this.managers = current.managers;
+        if(current.owner_type = "App\Models\Organization"){
+          this.boundToOrganization = true;
+          this.organization = current.owner_id;
+        }
+        else{
+          this.userId = this.owner_id;
+        }
+
+
+
+      });
+      // CemeteriesApi.get(this.$route.params.id).then(response => {
+      //   console.log(reponse.data);
+      // });
+    },
   },
   mounted(){
     this.getTypeOptions();
     this.getClassificationsOptions();
+    this.getSingle();
   }
 }
 </script>

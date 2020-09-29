@@ -8,7 +8,7 @@
     >
       <v-main 
         id="content"
-        class="is-admin"
+        class="is-admin blue-grey lighten-5"
       >
         <v-container fluid>
           <router-view></router-view>
