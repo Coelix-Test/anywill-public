@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="u-margin-20">All managers</h2>
+    <h2 class="u-margin-20">All users</h2>
     <responsive-data-table
       :data="data"
       :columns="columns"
@@ -12,7 +12,7 @@
           <v-btn 
             color="primary" 
             class="ma-2"
-            :to="{name: 'managers-edit', params: {id: item.id}}"
+            :to="{name: 'users-edit', params: {id: item.id}}"
           >
             <v-icon left>mdi-pencil</v-icon>Edit
           </v-btn>
@@ -31,7 +31,7 @@
         fixed
         bottom
         right
-        :to="{name: 'managers-create'}"
+        :to="{name: 'users-create'}"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>

@@ -7,7 +7,7 @@
       :totalItems="totalItems"
       @update="getPage"
     >
-      <template v-slot:expand="{ item }">
+      <!-- <template v-slot:expand="{ item }">
         <div>
           <v-btn 
             color="primary" 
@@ -20,7 +20,7 @@
             <v-icon left>mdi-delete</v-icon>Delete
           </v-btn>
         </div>
-      </template>
+      </template> -->
     </responsive-data-table>
   </div>
 </template>

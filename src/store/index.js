@@ -7,6 +7,8 @@ Vue.use(Vuex);
 import WindowWidth from '@/store/window-width.store';
 import Sidebar from '@/store/sidebar.store';
 import ContactPhones from '@/store/contact-phones.store';
+import Permissions from '@/store/permissions.store';
+import UserGeneral from '@/store/user-general.store';
 
 export default new Vuex.Store({
   state: {
@@ -20,5 +22,7 @@ export default new Vuex.Store({
     WindowWidth,
     Sidebar,
     ContactPhones,
+    Permissions,
+    UserGeneral,
   }
 })

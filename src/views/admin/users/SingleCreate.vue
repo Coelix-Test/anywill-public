@@ -5,7 +5,7 @@ TODO:
 -->
 <template>
   <div>
-    <h1 class="u-margin-20">Create Manager</h1>
+    <h1 class="u-margin-20">Create User</h1>
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
@@ -35,14 +35,20 @@ TODO:
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card>
+          <v-card v-if="showPermissions">
             <user-permissions></user-permissions>
           </v-card>
         </v-col>
         
       </v-row>
     </v-container>
-
+    <div class="d-flex justify-center" >
+      <v-btn
+        
+        @click="createSingle" dark>
+        Save
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -68,19 +74,22 @@ export default {
     UserPermissions,
     ContactPhoneList,
   },
+  computed: {
+    showPermissions(){
+      return this.$store.getters['UserGeneral/data'].role === 'manager';
+    }
+  },
   methods: {
     createSingle(){
       
-      const postData = {
-        name: this.name,
-      };
+      const postData = {};
 
       console.log(JSON.stringify(postData));
-      ManagersApi.create(JSON.stringify(postData)).then(response => {
-        if(response.data.private_id){
+      // ManagersApi.create(JSON.stringify(postData)).then(response => {
+      //   if(response.data.private_id){
           
-        }
-      });
+      //   }
+      // });
       
     },
   },

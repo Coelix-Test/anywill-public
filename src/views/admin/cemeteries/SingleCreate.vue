@@ -132,7 +132,6 @@ export default {
         postData.user_id = this.user_id;
       }
 
-      console.log(JSON.stringify(postData));
       CemeteriesApi.create(JSON.stringify(postData)).then(response => {
         if(response.data.private_id){
           this.$router.push({name: 'cemeteries-edit', params: { id: response.data.private_id} } );

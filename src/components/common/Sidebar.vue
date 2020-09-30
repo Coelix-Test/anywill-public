@@ -56,9 +56,9 @@ export default {
         route: { name: 'services-all' }
       },
       {
-        icon: 'mdi-account-tie',
-        text: 'Managers',
-        route: { name: 'managers-all' }
+        icon: 'mdi-account',
+        text: 'Users',
+        route: { name: 'users-all' }
       },
     ]
   }),
