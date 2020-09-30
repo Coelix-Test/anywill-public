@@ -59,14 +59,9 @@ export default {
         align: 'start',
       },
       {
-        value: 'phone',
-        text: 'Phone',
-        breakpoint: 568
-      },
-      {
         value: 'address',
         text: 'Address',
-        breakpoint: 1024
+        breakpoint: 768
       },
     ],
   }),
@@ -85,12 +80,11 @@ export default {
         this.data.splice(0);
         data.data.data.forEach((item, index) => {
           
-          item.address = 'Pushkinskaya 34, Odessa, Ukraine';
-          item.phone = '+38(012)3456789';
+          if(item.address){
+            item.address = item.address.formatted_address;
+          }
           item.id = item.private_id;
           delete item.private_id;
-          // this.cemeteries.push(item);
-          // this.$set(this.data, index, item);
           this.$set(this.data, index, item);
         });
         this.totalItems = data.data.total;

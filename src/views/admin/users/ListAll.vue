@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { ManagersApi } from '@/api';
+import { UsersApi } from '@/api';
 import ResponsiveDataTable from '@/components/common/DataTable/ResponsiveDataTable.vue';
 
 
@@ -59,13 +59,13 @@ export default {
         align: 'start',
       },
       {
-        value: 'phone',
-        text: 'Phone',
+        value: 'email',
+        text: 'Email',
         breakpoint: 568
       },
       {
-        value: 'address',
-        text: 'Address',
+        value: 'username',
+        text: 'Username',
         breakpoint: 1024
       },
     ],
@@ -76,7 +76,7 @@ export default {
   methods: {
     getPage({ page, search }){
       console.log('page:', page, ' search:', search);
-      ManagersApi.getPage({
+      UsersApi.getPage({
         page: page,
         search: search
       })
@@ -84,12 +84,6 @@ export default {
 
         this.data.splice(0);
         data.data.data.forEach((item, index) => {
-          
-          item.address = 'Pushkinskaya 34, Odessa, Ukraine';
-          item.phone = '+38(012)3456789';
-          delete item.private_id;
-          // this.cemeteries.push(item);
-          // this.$set(this.data, index, item);
           this.$set(this.data, index, item);
         });
         this.totalItems = data.data.total;
@@ -106,7 +100,7 @@ export default {
       this.getPage();
     },
     deleteItem(id){
-      ManagersApi.delete(id)
+      UsersApi.delete(id)
       .then(response => {
         if(response.data === 1){
           this.data = this.data.filter(el => id !== el.id);

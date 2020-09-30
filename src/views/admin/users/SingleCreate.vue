@@ -54,7 +54,7 @@ TODO:
 
 <script>
 // import VueGoogleAutocomplete from 'vue-google-autocomplete';
-import { ManagersApi } from '@/api';
+import { UsersApi } from '@/api';
 
 import UserGeneralInfo from '@/components/admin/users/UserGeneralInfo';
 import UserPermissions from '@/components/admin/users/UserPermissions';
@@ -83,9 +83,15 @@ export default {
     createSingle(){
       
       const postData = {};
+      const general = this.$store.getters['UserGeneral/data'];
+      const contacts = this.$store.getters['ContactPhones/data'];
+
+      if(this.showPermissions){
+        let permissions = this.$store.getters['Permissions/all'];
+      }
 
       console.log(JSON.stringify(postData));
-      // ManagersApi.create(JSON.stringify(postData)).then(response => {
+      // UsersApi.create(JSON.stringify(postData)).then(response => {
       //   if(response.data.private_id){
           
       //   }
