@@ -33,6 +33,10 @@ TODO:
             </v-tabs>
             
           </v-card>
+
+          <v-card class="my-2">
+            <file-upload></file-upload>
+          </v-card>
         </v-col>
         <v-col cols="12" md="6">
           <v-card v-if="showPermissions">
@@ -59,6 +63,7 @@ import { UsersApi } from '@/api';
 import UserGeneralInfo from '@/components/admin/users/UserGeneralInfo';
 import UserPermissions from '@/components/admin/users/UserPermissions';
 import ContactPhoneList from '@/components/common/ContactPhone/ContactPhoneList';
+import FileUpload from '@/components/common/FileUpload/FileUpload';
 
 export default {
   data: () => ({
@@ -73,6 +78,7 @@ export default {
     UserGeneralInfo,
     UserPermissions,
     ContactPhoneList,
+    FileUpload,
   },
   computed: {
     showPermissions(){
