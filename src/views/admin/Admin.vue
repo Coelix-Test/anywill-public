@@ -8,7 +8,7 @@
     >
       <v-main 
         id="content"
-        class="is-admin blue-grey lighten-5"
+        class="is-admin"
       >
         <v-container fluid>
           <router-view></router-view>
@@ -33,21 +33,22 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/mixins';
 
-// #wrapper{
-//   margin-left: 260px;
-//   width: calc(100% - 260px);
-//   min-height: 100%;
-//   @include media('<=desktop'){
-//     width: 100%;
-//     margin-left: 0;
-//   }
-// }
-
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
+.v-application {
+  font-family: 'Montserrat', sans-serif !important;
+  .title { // To pin point specific classes of some components
+     font-family: 'Montserrat', sans-serif !important;
+  }
+}
 
 #content {
   // width: 100%;
   // margin: 0 auto;
   // padding: 4.5rem 2.5rem 2rem 2.5rem;
+  &.is-admin{
+    background-color: #FCFCFC;
+  }
   @include media('<=tablet'){
     padding: 1rem;
   }

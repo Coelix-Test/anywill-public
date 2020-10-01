@@ -2,14 +2,15 @@
   <v-navigation-drawer
     v-model="active"
     :temporary="isMobile"
-    dark
     app
     disable-resize-watcher
     mobile-breakpoint="0"
+    class="elevation-3 px-2"
   >
     <div class="u-flex is-justify-center ma-4">
-      <img src="@/assets/logo.png" alt="" width="32px">
+      <img src="@/assets/anywill.svg" alt="">
     </div>
+    <v-divider></v-divider>
     <v-list>
       <v-list-item
           v-for="(item, i) in items"

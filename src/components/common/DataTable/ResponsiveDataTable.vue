@@ -21,6 +21,7 @@
         hide-default-footer
         disable-sort
         show-expand
+        show-select
         dense
       >
         <template 
