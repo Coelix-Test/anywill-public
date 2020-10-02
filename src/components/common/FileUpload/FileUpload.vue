@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-expansion-panels v-model="open">
+    <v-expansion-panels v-model="open" dense>
       <v-expansion-panel>
         <v-expansion-panel-header :class="openClass">
           Files
@@ -14,6 +14,7 @@
           <div>
             
             <upload-popup></upload-popup>
+            <uploaded-list></uploaded-list>
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -24,6 +25,7 @@
 
 <script>
 import UploadPopup from './UploadPopup';
+import UploadedList from './UploadedList';
 
 export default {
   data: () => ({
@@ -39,6 +41,7 @@ export default {
   },
   components: {
     UploadPopup,
+    UploadedList,
   }
 }
 </script>

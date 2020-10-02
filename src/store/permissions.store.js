@@ -47,6 +47,10 @@ export default {
     all(state) {
       return state.all;
     },
+    allActive(state){
+      let active = state.all.filter(e => e.active);
+      return active.map(e => e.id);
+    },
     editing(state){
       return state.editing;
     },

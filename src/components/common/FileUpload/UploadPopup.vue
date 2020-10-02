@@ -8,7 +8,6 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           class="my-2"
-          color="primary"
           dark
           v-bind="attrs"
           v-on="on"
@@ -21,10 +20,15 @@
         <v-card-title>Upload files</v-card-title>
 
         <div class="px-6">
-          <label :for="name" class="dropzone">
-            <div class="dropzone__main-caption text-h6">Drop files anywhere or click to upload.</div>
-            <div class="dropzone__accepted">(Accepted extensions: {{extensions}})</div>
-          </label>
+
+          <vue-dropzone
+            ref="dropzoneRef"
+            :id="name"
+            :options="dropzoneOptions"
+            :duplicateCheck="true"
+            @vdropzone-sending="onBeforeUpload"
+            @vdropzone-success="onAfterUpload"
+          ></vue-dropzone>
 
           <v-simple-table v-if="files.length">
             <template v-slot:default>
@@ -55,24 +59,12 @@
           </v-simple-table>
         </div>
 
-        <file-upload-comp
-          :input-id="name"
-          :name="name"
-          :accept="accept"
-          :multiple="multiple"
-          :drop="drop"
-          :directory="directory"
-          :drop-directory="dropDirectory"
-          :extensions="extensions"
-          ref="upload"
-          v-model="files"
-          :custom-action="handleFileUpload"
-        ></file-upload-comp>
+        
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="blue darken-1"
+            color="primary"
             text
             @click="dialog = false"
           >
@@ -85,56 +77,60 @@
 </template>
 
 <script>
-import FileUploadComp from 'vue-upload-component/dist/vue-upload-component.part.js';
+import vueDropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+import { mapMutations } from 'vuex';
+
 import { FilesApi } from '@/api';
 
 export default {
   data: () => ({
     files: [],
     dialog: false,
-
-    accept: 'image/png,image/gif,image/jpeg,image/webp',
-    multiple: true,
-    drop: true,
-    directory: false,
-    dropDirectory: false,
-    extensions: 'gif,jpg,jpeg,png,webp',
     name: 'files',
+
+    dropzoneOptions: {
+      url: process.env['VUE_APP_API_URL'] + '/media',
+      thumbnailWidth: 100,
+      thumbnailHeight: 100,
+      maxFilesize: 10,
+    }
+    
   }),
   components: {
-    FileUploadComp,
+    vueDropzone,
+  },
+  watch: {
+    dialog(){
+      if(!this.dialog){
+        //If you don't want files that are currently uploading to be canceled, remove 'true' parameter
+        this.$refs.dropzoneRef.removeAllFiles(true);
+      }
+    }
   },
   methods: {
-    // $refs.upload.active
-    inputFile(newFile, oldFile) {
-      if (newFile && !oldFile) {
-        // Add file
-        if(!this.$refs.upload.active){
-          this.$refs.upload.active = true;
-        }
-        console.log('start file upload');
-      }
+    ...mapMutations({
+      addFile: 'Files/addFile',
+    }),
+    onBeforeUpload(file, xhr, formData){
+      formData.append('files[]', file);
+      formData.delete('file');
     },
-    handleFileUpload: async function(file){
-      return await FilesApi.upload();
+    onAfterUpload(file, response){
+      //push files to vuex
+      if(file.status === 'success' && response[0]){
+        this.addFile({
+          id: response[0],
+          type: file.type,
+          name: file.upload.filename,
+        });
+      }
     },
   },
 }
 </script>
 
 <style lang="scss">
-@import "~vue-upload-component/dist/vue-upload-component.part.css";
 
-.dropzone{
-  border: 2px dashed #0087F7;
-  border-radius: 5px;
-  background: white;
-  min-height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  
-}
 </style>

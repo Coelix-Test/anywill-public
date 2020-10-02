@@ -7,5 +7,13 @@ export default {
     });
   },
 
+  getRoles(){
+    return env.API.get('/roles');
+  },
+
+  create(data){
+    return env.API.post('/admin/users', data);
+  },
+
   
 }

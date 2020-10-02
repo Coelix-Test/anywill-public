@@ -5,7 +5,18 @@ TODO:
 -->
 <template>
   <div>
-    <h1 class="u-margin-20">Create User</h1>
+    <div class="d-flex align-center">
+      <h1 class="ma-5">Create User</h1>
+      <v-spacer></v-spacer>
+      <v-btn
+        class="ma-5"
+        @click="createSingle" 
+        dark
+        large
+      >
+        Save
+      </v-btn>
+    </div>
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
@@ -28,7 +39,7 @@ TODO:
                 :key="index"
                 :value="'tab-' + index"
               >
-                <component :is="tab.component"></component>
+                <component :is="tab.component" class="pa-3"></component>
               </v-tab-item>
             </v-tabs>
             
@@ -40,19 +51,30 @@ TODO:
         </v-col>
         <v-col cols="12" md="6">
           <v-card v-if="showPermissions">
-            <user-permissions></user-permissions>
+            <v-toolbar dense dark>
+              <v-toolbar-title >User Permissions</v-toolbar-title>
+            </v-toolbar>
+            <user-permissions class="pa-4 mb-2"></user-permissions>
+          </v-card>
+
+          <v-card>
+            <v-toolbar dense dark>
+              <v-toolbar-title >Comment</v-toolbar-title>
+            </v-toolbar>
+            <div class="px-3 pt-3">
+              <v-textarea
+                cols="6"
+                label="Leave your comment"
+                no-resize
+                outlined
+                v-model="comment"
+              ></v-textarea>
+            </div>
           </v-card>
         </v-col>
         
       </v-row>
     </v-container>
-    <div class="d-flex justify-center" >
-      <v-btn
-        
-        @click="createSingle" dark>
-        Save
-      </v-btn>
-    </div>
   </div>
 </template>
 
@@ -64,6 +86,7 @@ import UserGeneralInfo from '@/components/admin/users/UserGeneralInfo';
 import UserPermissions from '@/components/admin/users/UserPermissions';
 import ContactPhoneList from '@/components/common/ContactPhone/ContactPhoneList';
 import FileUpload from '@/components/common/FileUpload/FileUpload';
+import VuexAddressAutocomplete from '@/components/common/Address/VuexAddressAutocomplete';
 
 export default {
   data: () => ({
@@ -72,37 +95,70 @@ export default {
     leftTabs: [
       { name: 'General Info', component: UserGeneralInfo,},
       { name: 'Contact Info', component: ContactPhoneList,},
+      { name: 'Address', component: VuexAddressAutocomplete,},
     ],
+
+    comment: '',
   }),
   components: {
     UserGeneralInfo,
     UserPermissions,
     ContactPhoneList,
     FileUpload,
+    VuexAddressAutocomplete,
   },
   computed: {
     showPermissions(){
-      return this.$store.getters['UserGeneral/data'].role === 'manager';
+      return this.$store.getters['UserGeneral/data'].role === 3;
     }
   },
   methods: {
     createSingle(){
       
-      const postData = {};
-      const general = this.$store.getters['UserGeneral/data'];
-      const contacts = this.$store.getters['ContactPhones/data'];
+      let postData = this.collectPostData();
+      UsersApi.create(postData).then(response => {
+        // if(response.data.private_id){
+          
+        // }
+        console.log(response);
+      });
+      
+    },
+    collectPostData(){
+      
+      let general = { ...this.$store.getters['UserGeneral/data'] };
+      general.password_confirmation = general.passwordConfirmation;
+      delete general.passwordConfirmation;
+      
+      const files = this.$store.getters['Files/getData'].map(e => e.id);
+      const contacts = this.$store.getters['ContactPhones/data'].map(item => {
+        return {phone: item.phone, platform: item.platform};
+      });
 
-      if(this.showPermissions){
-        let permissions = this.$store.getters['Permissions/all'];
+      let addressVuex = this.$store.getters['MapAddress/getData'];
+      let addressFormatted = { 
+        ...addressVuex.addressComponents,
+        formatted_address: addressVuex.formattedAddress
       }
 
-      console.log(JSON.stringify(postData));
-      // UsersApi.create(JSON.stringify(postData)).then(response => {
-      //   if(response.data.private_id){
-          
-      //   }
-      // });
-      
+      const postData = {
+        ...general,
+        contacts: contacts,
+        comment: this.comment,
+        media: files,
+        addresses: [
+          addressFormatted
+        ],
+      };
+
+      if(this.showPermissions){
+        let permissions = this.$store.getters['Permissions/allActive'];
+        postData.permissions = permissions;
+      }
+
+      console.log(postData);
+      return postData;
+
     },
   },
   mounted(){

@@ -6,7 +6,7 @@ export default {
       name: '',
       username: '',
       email: '',
-      role: 'admin',
+      role: 3,
       password: '',
       passwordConfirmation: '',
     }

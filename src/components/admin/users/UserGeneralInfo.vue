@@ -26,6 +26,8 @@
         <v-select
           :value="user.role"
           :items="roleOptions"
+          item-value="id"
+          item-text="name"
           @change="saveData('role', $event)"
         ></v-select>
       </v-col>
@@ -58,6 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { UsersApi } from '@/api';
 
 export default {
   data: () => ({
@@ -65,11 +68,7 @@ export default {
     show1: false,
     show2: false,
 
-    roleOptions: [
-      'admin',
-      'service-provider',
-      'manager',
-    ],
+    roleOptions: [],
 
     rules: {
       required: v => !!v || 'Required.',
@@ -89,7 +88,13 @@ export default {
       let user = this.user;
       user[prop] = value;
       this.$store.commit('UserGeneral/saveData', user);
+    },
+    getAvailableRoles(){
+      UsersApi.getRoles().then(response => this.roleOptions = response.data);
     }
+  },
+  mounted(){
+    this.getAvailableRoles();
   }
 }
 </script>

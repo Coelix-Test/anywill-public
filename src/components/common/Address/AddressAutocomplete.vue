@@ -29,7 +29,7 @@ export default {
     map: null,
     geocoder: null,
     marker: null,
-    isMapVisible: false,
+    isMapVisible: true,
     addressProps: [
       'administrative_area_level_1', 
       'administrative_area_level_2',

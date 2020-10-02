@@ -1,17 +1,14 @@
 <template>
-  <div class="pa-4">
-    <div class="text-h4">User Permissions</div>
-    <div class="mt-4">
-      <v-switch
-        v-for="permission in permissions"
-        class="mt-0"
-        :key="permission.id"
-        :label="permission.name"
-        :value="permission.active"
-        @change="handlePermissionChange($event, permission.id)"
-        dense
-      ></v-switch>
-    </div>
+  <div>
+    <v-switch
+      v-for="permission in permissions"
+      class="mt-0"
+      :key="permission.id"
+      :label="permission.name"
+      :value="permission.active"
+      @change="handlePermissionChange($event, permission.id)"
+      dense
+    ></v-switch>
   </div>
 </template>
 

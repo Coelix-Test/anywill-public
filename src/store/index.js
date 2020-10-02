@@ -9,6 +9,8 @@ import Sidebar from '@/store/sidebar.store';
 import ContactPhones from '@/store/contact-phones.store';
 import Permissions from '@/store/permissions.store';
 import UserGeneral from '@/store/user-general.store';
+import Files from '@/store/files.store';
+import MapAddress from '@/store/map-address.store';
 
 export default new Vuex.Store({
   state: {
@@ -24,5 +26,7 @@ export default new Vuex.Store({
     ContactPhones,
     Permissions,
     UserGeneral,
+    Files,
+    MapAddress,
   }
 })
