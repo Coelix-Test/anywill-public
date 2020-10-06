@@ -8,41 +8,36 @@
         placeholder="Start typing"
         country="us"
         @placechanged="getAddressData"
-        :value="address"
+        :value="value.formatted_address"
         @input="handleAddressInput"
       >
       </vuetify-google-autocomplete>
-        <v-btn dark class="mt-3 ml-3" 
-          
-          @click="toggleMap">
-          <v-fab-transition><v-icon v-text="btnInfo.icon" :key="btnInfo.icon"></v-icon></v-fab-transition>
-          {{btnInfo.text}}
-        </v-btn>
     </div>
     <div class="map-container" ref="map" v-show="isMapVisible"></div>
   </div>
 </template>
 
 <script>
+const addressProps = [
+  'administrative_area_level_1', 
+  'administrative_area_level_2',
+  'country',
+  'latitude',
+  'longitude',
+  'name',
+  'locality',
+  'place_id',
+  'postal_code',
+  'route',
+  'street_number',
+  'formatted_address',
+];
 export default {
   data: () => ({
     map: null,
     geocoder: null,
     marker: null,
     isMapVisible: true,
-    addressProps: [
-      'administrative_area_level_1', 
-      'administrative_area_level_2',
-      'country',
-      'latitude',
-      'longitude',
-      'name',
-      'locality',
-      'place_id',
-      'postal_code',
-      'route',
-      'street_number',
-    ]
   }),
   model: {
     prop: 'value',
@@ -52,39 +47,11 @@ export default {
     value: {
       type: Object,
       default: function(){
-        let value = {};
-        this.addressProps.forEach(prop => {
-          if(prop === 'latitude' || prop === 'longitude'){
-            value[prop] = 0;
-          }
-          else{
-            value[prop] = '';
-          }
-        });
+        return {};
       }
-    },
-    address: {
-      type: String,
-      default: '',
     },
   },
   computed: {
-    btnInfo(){
-      let btn;
-      if(this.isMapVisible){
-        btn = {
-          icon: 'mdi-minus',
-          text: 'Hide map'
-        };
-      }
-      else{
-        btn = {
-          icon: 'mdi-plus',
-          text: 'Show map'
-        };
-      }
-      return btn;
-    },
     latitude(){
       return this.value.latitude;
     },
@@ -94,35 +61,32 @@ export default {
     latLng(){
       return {lat: this.latitude, lng: this.longitude};
     },
-    // formattedAddress(){
-    //   return this.value.formatted_address;
-    // }
   },
   watch: {
     latLng(){
       //move marker to the new position
-      if(this.latitude !== 0 && this.longitude !== 0){
+      if(this.latitude && this.latitude !== 0 && this.longitude !== 0){
         let latLng = new google.maps.LatLng(this.latLng);
         this.placeMarkerAndPanTo(latLng);
       }
     },
   },
   methods: {
-    toggleMap(){
-      this.isMapVisible = !this.isMapVisible;
-      google.maps.event.trigger(this.map, "resize");
-    },
-    handleAddressInput(value){
-      this.$emit('update:address', value);
+    handleAddressInput(address){
+      let value = { ...this.value };
+      value.formatted_address = address;
+      // console.log('update value: ', value);
+      this.$emit('update', value);
     },
     getAddressData(data){
       //get address from autocomplete
       let value = {};
-      this.addressProps.forEach(prop => {
+      addressProps.forEach(prop => {
         value[prop] = data[prop];
       });
-      
-      console.log('value: ', data);
+
+      value.formatted_address = this.value.formatted_address;
+      // console.log('update value: ', value);
       this.$emit('update', value);
 
     },
@@ -136,9 +100,8 @@ export default {
             value.latitude = results[0].geometry.location.lat();
             value.longitude = results[0].geometry.location.lng();
 
-            console.log('value: ', results[0]);
+            // console.log('value: ', results[0]);
             this.$emit('update', value);
-            this.$emit('update:address', results[0].formatted_address);
 
           } else {
             console.error("No results found");

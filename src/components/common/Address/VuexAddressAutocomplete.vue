@@ -2,9 +2,7 @@
   <div>
     <address-autocomplete 
       :value="address.addressComponents"
-      :address="address.formattedAddress"
       @update="onAddressComponentsUpdate"
-      @update:address="onFormattedAddressUpdate"
     ></address-autocomplete>
   </div>
 </template>
@@ -25,15 +23,10 @@ export default {
   methods: {
     ...mapMutations({
       updateAddrComp: 'MapAddress/updateAddrComp',
-      updateFormattedAddr: 'MapAddress/updateFormattedAddr',
     }),
     onAddressComponentsUpdate(addressComponents){
       this.updateAddrComp(addressComponents);
     },
-    onFormattedAddressUpdate(formattedAddress){
-      
-      this.updateFormattedAddr(formattedAddress);
-    }
   }
 }
 </script>

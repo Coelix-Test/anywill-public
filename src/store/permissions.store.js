@@ -8,8 +8,10 @@ export default {
     editing: []
   },
   mutations: {
-    saveAll(state, data){
-      state.all = data;
+    saveAll(state, permissions){
+      permissions.forEach(permission => {
+        state.all.push(permission);
+      });
     },
     load(state){
       state.loaded = true;

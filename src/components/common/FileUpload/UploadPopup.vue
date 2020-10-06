@@ -120,9 +120,12 @@ export default {
     onAfterUpload(file, response){
       //push files to vuex
       if(file.status === 'success' && response[0]){
+        console.log(file);
         this.addFile({
           id: response[0],
-          type: file.type,
+          meta: {
+            mimetype: file.type,  
+          },
           name: file.upload.filename,
         });
       }

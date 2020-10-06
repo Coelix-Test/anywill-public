@@ -9,11 +9,13 @@
     <template v-slot:[`item.actions`]="{ item }">
       <div class="d-flex">
         <v-icon
+          v-if="item.path"
           @click="download(item)"
         >
           mdi-download
         </v-icon>
         <v-icon
+          class="ml-auto"
           @click="deleteFile(item.id)"
         >
           mdi-delete

@@ -38,7 +38,7 @@
 export default {
   data: () => ({
     platforms: [
-      {name: 'None', value: '' },
+      {name: 'None', value: null },
       {name: 'Telegram', value: 'Telegram', icon: 'mdi-telegram' },
       {name: 'Viber', value: 'Viber' },
       {name: 'Whatsapp', value: 'Whatsapp', icon: 'mdi-whatsapp' },
@@ -46,7 +46,7 @@ export default {
   }),
   props: {
     id: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     phone: {
@@ -55,7 +55,7 @@ export default {
     },
     platform: {
       type: String,
-      default: '',
+      default: null,
     },
   },
   computed: {

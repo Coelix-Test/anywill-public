@@ -1,27 +1,41 @@
 <template>
   <div>
-    <h1 class="u-margin-20">Update Cemetery</h1>
     <v-container>
       <v-row>
-        <v-col cols="12" md="4">
-          <v-text-field
-            label="Name"
-            v-model="name"
-            class="mt-3"
-          ></v-text-field>
+        <v-col cols="12">
+          <v-btn 
+            color="primary" 
+            @click="createSingle"
+            large
+          >
+            <span class="font-weight-bold">Save changes</span>
+          </v-btn>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-select
-            :disabled="!typeOptions.length"
-            :items="typeOptions"
-            v-model="type"
-            item-text="name"
-            item-value="id"
-            label="Cemetery Type"
-            class="mt-3"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="4">
+          <p class="text-h5">General Info</p>
+          <v-container class="px-0">
+            <v-row no-gutters>
+              <v-col cols=6 class="pr-3">
+                <v-text-field
+                  label="Name"
+                  v-model="name"
+                  class="mt-3"
+                ></v-text-field>
+              </v-col>
+              <v-col cols=6 class="pl-3">
+                <v-select
+                  :disabled="!typeOptions.length"
+                  :items="typeOptions"
+                  v-model="type"
+                  item-text="name"
+                  item-value="id"
+                  label="Cemetery Type"
+                  class="mt-3"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+
           <v-autocomplete
             v-model="classifications"
             :disabled="!classificationsOptions.length"
@@ -34,11 +48,9 @@
             multiple
           >  
           </v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <v-switch v-model="boundToOrganization" label="Is bound to organization"></v-switch>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <api-autocomplete
             v-if="boundToOrganization" 
             v-model="organization"
@@ -47,25 +59,29 @@
           ></api-autocomplete>
           <api-autocomplete
             v-else 
-            v-model="userId"
+            v-model="user_id"
             label="Select owner"
             api-type="users"
           ></api-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <api-autocomplete 
             v-model="managers"
             label="Select Managers"
             api-type="managers"
             multiple>
           </api-autocomplete>
+          
         </v-col>
-        <v-col cols="12">
+
+        
+        <v-col cols="4" >
+          <p class="text-h5">Services</p>
+          <services-list></services-list>
+        </v-col>
+        <v-col cols="4" >
           <address-autocomplete :address.sync="address" v-model="addressComp"></address-autocomplete>
         </v-col>
-        <v-col cols="12" md="2" offset-md="5">
-          <v-btn dark block @click="updateSingle">Update</v-btn>
-        </v-col>
+        
       </v-row>
     </v-container>
 
@@ -75,72 +91,19 @@
 <script>
 // import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import { CemeteriesApi } from '@/api';
-
-import AddressAutocomplete from '@/components/common/Address/AddressAutocomplete';
-import ApiAutocomplete from '@/components/common/ApiAutocomplete/ApiAutocomplete';
+import { SingleCemetery } from '@/mixins/cemetery/single-cemetery.mixin';
 
 export default {
-  data: () => ({
-    name: '',
-    type: null,
-    classifications: [],
-    options : [],
-    media: [],
-    address: '',
-    addressComp: {},
-    managers: [],
-
-    boundToOrganization: false,
-    userId: 0,
-    organization: 0,
-    
-
-    typeOptions: [],
-    classificationsOptions: [],
-
-  }),
-  components: {
-    AddressAutocomplete,
-    ApiAutocomplete,
-  },
+  mixins: [ SingleCemetery ],
   methods: {
     updateSingle(){
-      
-      //set up all address data together
-      let addressData = JSON.parse(JSON.stringify(this.addressComp));
-      addressData.formatted_address = this.address;
-
-      const postData = {
-        name: this.name,
-        type: this.type,
-        classifications: this.classifications,
-        address: addressData,
-        options: this.options,
-        media: this.media,
-        managers: this.managers.map(manager => manager.id),
-      };
-
-      if(this.boundToOrganization){
-        postData.organization_id = this.organization;
-      }
-      else{
-        postData.user_id = this.user_id;
-      }
-
-      console.log(JSON.stringify(postData));
-      CemeteriesApi.update(this.$route.params.id, JSON.stringify(postData));
-      
-    },
-    getTypeOptions(){
-      CemeteriesApi.getTypes().then(response => this.typeOptions = response.data);
-    },
-    getClassificationsOptions(){
-      CemeteriesApi.getClassifications().then(response => this.classificationsOptions = response.data);
+      const postData = this.collectPostData();
+      CemeteriesApi.update(this.$route.params.id, postData);
     },
     getSingle(){
       CemeteriesApi.get(this.$route.params.id).then(response => {
         let current = response.data;
-        console.log(current);
+        // console.log(current);
 
         this.name = current.name;
         this.type = current.type;
@@ -159,7 +122,7 @@ export default {
         //
 
         this.managers = current.managers;
-        if(current.owner_type = "App\Models\Organization"){
+        if(current.owner_type === "App\Models\Organization"){
           this.boundToOrganization = true;
           this.organization = current.owner_id;
         }
@@ -167,14 +130,10 @@ export default {
           this.userId = this.owner_id;
         }
 
-
-
       });
     },
   },
   mounted(){
-    this.getTypeOptions();
-    this.getClassificationsOptions();
     this.getSingle();
   }
 }

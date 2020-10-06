@@ -1,15 +1,31 @@
+const getDefaultState = () => {
+  return {
+    data: []
+  }
+}
+
+const state = getDefaultState();
+
 export default {
   namespaced: true,
-  state: {
-    data: []
+  state,
+  getters: {
+    data(state) {
+      return state.data;
+    },
   },
   mutations: {
-    addItem(state){
-      state.data.push({
-        id: Math.UUID(),
-        name: '',
-        platform: '',
-      });
+    addItem(state, item = null){
+      if(item){
+        state.data.push(item);
+      }
+      else{
+        state.data.push({
+          id: Math.UUID(),
+          name: '',
+          platform: '',
+        });
+      }
     },
     deleteItem(state, id){
       state.data = state.data.filter(item => item.id !== id);
@@ -25,12 +41,10 @@ export default {
         }
         return resItem;
       })
+    },
+    reset(state){
+      Object.assign(state, getDefaultState());
     }
   },
   actions: {},
-  getters: {
-    data(state) {
-      return state.data;
-    },
-  }
 }

@@ -1,22 +1,23 @@
+const getDefaultState = () => {
+  return {
+    data: {
+      addressComponents: {}
+    }
+  }
+}
+
+const state = getDefaultState();
+
 export default {
   namespaced: true,
-  state: {
-    data: {
-      addressComponents: {},
-      formattedAddress: ''
-    }
-  },
+  state,
   mutations: {
-    // updateData(state, payload){
-    //   state.addressComponents = { ...payload.addressComponents };
-    //   state.formattedAddress = payload.formattedAddress;
-    // },
     updateAddrComp(state, components){
       state.data.addressComponents = { ...components };
     },
-    updateFormattedAddr(state, address){
-      state.data.formattedAddress = address;
-    }
+    reset(state){
+      Object.assign(state, getDefaultState());
+    },
   },
   actions: {},
   getters: {

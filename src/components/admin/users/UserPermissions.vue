@@ -5,8 +5,8 @@
       class="mt-0"
       :key="permission.id"
       :label="permission.name"
-      :value="permission.active"
-      @change="handlePermissionChange($event, permission.id)"
+      :input-value="permission.active"
+      @change="onPermissionChange($event, permission.id)"
       dense
     ></v-switch>
   </div>
@@ -21,12 +21,12 @@ export default {
   computed: {
     ...mapGetters({
       permissions: 'Permissions/all',
-    })
+    }),
   },
   methods: {
-    handlePermissionChange(event, id){
+    onPermissionChange(value, id){
       if(id === 1){
-        if(event){
+        if(value){
           this.$store.commit('Permissions/turnOnAll');
         }
         else{
@@ -34,7 +34,10 @@ export default {
         }
       }
       else{
-        this.$store.commit('Permissions/updateItem', {id: id, value: event});
+        if(!value){
+          this.$store.commit('Permissions/updateItem', {id: 1, value: false});
+        }
+        this.$store.commit('Permissions/updateItem', {id: id, value: value});
       }
     }
   },

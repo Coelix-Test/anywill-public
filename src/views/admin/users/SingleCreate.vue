@@ -1,8 +1,3 @@
-<!-- 
-TODO:  
-- Adding services
-- Redirect to single edit
--->
 <template>
   <div>
     <div class="d-flex align-center">
@@ -79,86 +74,22 @@ TODO:
 </template>
 
 <script>
-// import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import { UsersApi } from '@/api';
-
-import UserGeneralInfo from '@/components/admin/users/UserGeneralInfo';
-import UserPermissions from '@/components/admin/users/UserPermissions';
-import ContactPhoneList from '@/components/common/ContactPhone/ContactPhoneList';
-import FileUpload from '@/components/common/FileUpload/FileUpload';
-import VuexAddressAutocomplete from '@/components/common/Address/VuexAddressAutocomplete';
+import SingleUser from '@/mixins/user/single-user.mixin';
 
 export default {
-  data: () => ({
-    name: '',
-    leftTabActive: null,
-    leftTabs: [
-      { name: 'General Info', component: UserGeneralInfo,},
-      { name: 'Contact Info', component: ContactPhoneList,},
-      { name: 'Address', component: VuexAddressAutocomplete,},
-    ],
-
-    comment: '',
-  }),
-  components: {
-    UserGeneralInfo,
-    UserPermissions,
-    ContactPhoneList,
-    FileUpload,
-    VuexAddressAutocomplete,
-  },
-  computed: {
-    showPermissions(){
-      return this.$store.getters['UserGeneral/data'].role === 3;
-    }
-  },
+  mixins: [ SingleUser ],
   methods: {
     createSingle(){
       
       let postData = this.collectPostData();
       UsersApi.create(postData).then(response => {
-        // if(response.data.private_id){
-          
-        // }
-        console.log(response);
+        // console.log(response.data);
+        if(response.data.id){
+          this.$router.push('users-edit', { id: response.data.id});
+        }
       });
       
-    },
-    collectPostData(){
-      
-      let general = { ...this.$store.getters['UserGeneral/data'] };
-      general.password_confirmation = general.passwordConfirmation;
-      delete general.passwordConfirmation;
-      
-      const files = this.$store.getters['Files/getData'].map(e => e.id);
-      const contacts = this.$store.getters['ContactPhones/data'].map(item => {
-        return {phone: item.phone, platform: item.platform};
-      });
-
-      let addressVuex = this.$store.getters['MapAddress/getData'];
-      let addressFormatted = { 
-        ...addressVuex.addressComponents,
-        formatted_address: addressVuex.formattedAddress
-      }
-
-      const postData = {
-        ...general,
-        contacts: contacts,
-        comment: this.comment,
-        media: files,
-        addresses: [
-          addressFormatted
-        ],
-      };
-
-      if(this.showPermissions){
-        let permissions = this.$store.getters['Permissions/allActive'];
-        postData.permissions = permissions;
-      }
-
-      console.log(postData);
-      return postData;
-
     },
   },
   mounted(){

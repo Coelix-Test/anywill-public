@@ -1,32 +1,45 @@
 <!-- 
 TODO:  
 - Adding services
-- Redirect to single edit
 -->
 <template>
   <div>
-    <h1 class="u-margin-20">Create Cemetery</h1>
     <v-container>
       <v-row>
-        <v-col cols="12" md="4">
-          <v-text-field
-            label="Name"
-            v-model="name"
-            class="mt-3"
-          ></v-text-field>
+        <v-col cols="12">
+          <v-btn 
+            color="primary" 
+            @click="createSingle"
+            large
+          >
+            <span class="font-weight-bold">Create</span>
+          </v-btn>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-select
-            :disabled="!typeOptions.length"
-            :items="typeOptions"
-            v-model="type"
-            item-text="name"
-            item-value="id"
-            label="Cemetery Type"
-            class="mt-3"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="4">
+          <p class="text-h5">General Info</p>
+          <v-container class="px-0">
+            <v-row no-gutters>
+              <v-col cols=6 class="pr-3">
+                <v-text-field
+                  label="Name"
+                  v-model="name"
+                  class="mt-3"
+                ></v-text-field>
+              </v-col>
+              <v-col cols=6 class="pl-3">
+                <v-select
+                  :disabled="!typeOptions.length"
+                  :items="typeOptions"
+                  v-model="type"
+                  item-text="name"
+                  item-value="id"
+                  label="Cemetery Type"
+                  class="mt-3"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+
           <v-autocomplete
             v-model="classifications"
             :disabled="!classificationsOptions.length"
@@ -39,11 +52,9 @@ TODO:
             multiple
           >  
           </v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <v-switch v-model="boundToOrganization" label="Is bound to organization"></v-switch>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <api-autocomplete
             v-if="boundToOrganization" 
             v-model="organization"
@@ -56,21 +67,25 @@ TODO:
             label="Select owner"
             api-type="users"
           ></api-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
+
           <api-autocomplete 
             v-model="managers"
             label="Select Managers"
             api-type="managers"
             multiple>
           </api-autocomplete>
+          
         </v-col>
-        <v-col cols="12">
+
+        
+        <v-col cols="4" >
+          <p class="text-h5">Services</p>
+          <services-list></services-list>
+        </v-col>
+        <v-col cols="4" >
           <address-autocomplete :address.sync="address" v-model="addressComp"></address-autocomplete>
         </v-col>
-        <v-col cols="12" md="2" offset-md="5">
-          <v-btn dark block @click="createSingle">Create</v-btn>
-        </v-col>
+        
       </v-row>
     </v-container>
 
@@ -78,78 +93,23 @@ TODO:
 </template>
 
 <script>
-// import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import { CemeteriesApi } from '@/api';
-
-import AddressAutocomplete from '@/components/common/Address/AddressAutocomplete';
-import ApiAutocomplete from '@/components/common/ApiAutocomplete/ApiAutocomplete';
+import { SingleCemetery } from '@/mixins/cemetery/single-cemetery.mixin';
 
 export default {
-  data: () => ({
-    name: '124 Conch St, Holden Beach, NC 28462, USA',
-    type: 1,
-    classifications: [1],
-    options : [],
-    media: [],
-    address: '124 Conch St, Holden Beach, NC 28462, USA',
-    addressComp: {},
-    managers: [2,1],
-
-    boundToOrganization: true,
-    user_id: 0,
-    organization: 2,
-    
-
-    typeOptions: [],
-    classificationsOptions: [],
-
-  }),
-  components: {
-    AddressAutocomplete,
-    ApiAutocomplete,
-  },
+  mixins: [ SingleCemetery ],
   methods: {
     createSingle(){
-      
-      //set up all address data together
-      let addressData = JSON.parse(JSON.stringify(this.addressComp));
-      addressData.formatted_address = this.address;
 
-      const postData = {
-        name: this.name,
-        type: this.type,
-        classifications: this.classifications,
-        address: addressData,
-        options: this.options,
-        media: this.media,
-        managers: this.managers
-      };
-
-      if(this.boundToOrganization){
-        postData.organization_id = this.organization;
-      }
-      else{
-        postData.user_id = this.user_id;
-      }
-
-      CemeteriesApi.create(JSON.stringify(postData)).then(response => {
+      let postData = this.collectPostData();
+      CemeteriesApi.create(postData).then(response => {
         if(response.data.private_id){
           this.$router.push({name: 'cemeteries-edit', params: { id: response.data.private_id} } );
         }
       });
       
     },
-    getTypeOptions(){
-      CemeteriesApi.getTypes().then(response => this.typeOptions = response.data);
-    },
-    getClassificationsOptions(){
-      CemeteriesApi.getClassifications().then(response => this.classificationsOptions = response.data);
-    },
   },
-  mounted(){
-    this.getTypeOptions();
-    this.getClassificationsOptions();
-  }
 }
 </script>
 

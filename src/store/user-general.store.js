@@ -1,6 +1,5 @@
-export default {
-  namespaced: true,
-  state: {
+const getDefaultState = () => {
+  return {
     // loaded: false,
     data: {
       name: '',
@@ -10,7 +9,13 @@ export default {
       password: '',
       passwordConfirmation: '',
     }
-  },
+  }
+}
+const state = getDefaultState();
+
+export default {
+  namespaced: true,
+  state,
   getters: {
     data(state){
       return state.data;
@@ -19,6 +24,9 @@ export default {
   mutations: {
     saveData(state, data){
       state.data = data;
+    },
+    reset(state){
+      Object.assign(state, getDefaultState());
     }
   },
   actions: {
