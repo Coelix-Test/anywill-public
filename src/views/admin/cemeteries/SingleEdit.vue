@@ -5,7 +5,7 @@
         <v-col cols="12">
           <v-btn 
             color="primary" 
-            @click="createSingle"
+            @click="updateSingle"
             large
           >
             <span class="font-weight-bold">Save changes</span>
@@ -70,6 +70,23 @@
             api-type="managers"
             multiple>
           </api-autocomplete>
+
+          <file-upload class="mb-4"></file-upload>
+
+          <v-card>
+            <v-toolbar dense dark class="primary">
+              <v-toolbar-title >Comment</v-toolbar-title>
+            </v-toolbar>
+            <div class="px-3 pt-3">
+              <v-textarea
+                cols="6"
+                label="Leave your comment"
+                no-resize
+                outlined
+                v-model="comment"
+              ></v-textarea>
+            </div>
+          </v-card>
           
         </v-col>
 
@@ -115,8 +132,6 @@ export default {
         current.address.latitude = parseFloat(current.address.latitude);
         current.address.longitude = parseFloat(current.address.longitude);
         this.addressComp = current.address;
-
-        this.media = current.media;
         
         //TODO: cemetery options
         //
@@ -128,6 +143,16 @@ export default {
         }
         else{
           this.userId = this.owner_id;
+        }
+
+        if(response.data.comments.length){
+          this.comment = response.data.comments[0].comment;
+        }
+
+        if(response.data.media && response.data.media.length){
+          response.data.media.forEach(item => {
+            this.$store.commit('Files/addFile', item);
+          });
         }
 
       });

@@ -9,6 +9,7 @@
         <v-btn
           class="my-2"
           dark
+          color="primary"
           v-bind="attrs"
           v-on="on"
         >

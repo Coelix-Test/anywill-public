@@ -7,6 +7,7 @@
         class="ma-5"
         @click="updateSingle" 
         dark
+        color="primary"
         large
       >
         Save Changes
@@ -18,7 +19,7 @@
           <v-card>
             <v-tabs
               v-model="leftTabActive"
-              background-color="dark"
+              background-color="primary"
               dark
             >
               <v-tab
@@ -46,14 +47,14 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-card v-if="showPermissions">
-            <v-toolbar dense dark>
+            <v-toolbar dense dark color="primary">
               <v-toolbar-title >User Permissions</v-toolbar-title>
             </v-toolbar>
             <user-permissions class="pa-4 mb-2"></user-permissions>
           </v-card>
 
           <v-card>
-            <v-toolbar dense dark>
+            <v-toolbar dense dark color="primary">
               <v-toolbar-title >Comment</v-toolbar-title>
             </v-toolbar>
             <div class="px-3 pt-3">

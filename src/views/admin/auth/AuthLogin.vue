@@ -38,8 +38,8 @@ import { UsersApi, AuthApi } from '@/api';
 
 export default {
   data: () => ({
-    username: '',
-    password: '',
+    username: 'admin',
+    password: 'admin',
 
     show1: false,
   }),

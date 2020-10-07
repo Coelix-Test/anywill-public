@@ -55,8 +55,13 @@ export default {
         search: this.search,
       }
       return this.getApi().getPage(params).then(response => {
-
-        this.items = response.data.data;
+        if(Array.isArray(response.data)){
+          //if not paginated results
+          this.items = response.data;
+        }
+        else{
+          this.items = response.data.data;
+        }
         this.isLoading = false;
       });
     },
@@ -87,11 +92,11 @@ export default {
   },
   watch: {
     search(){
-      console.log('search updated:', this.search);
+      // console.log('search updated:', this.search);
       this.debouncedSearch();
     },
     apiType(){
-      console.log('ApiAutocomplete, api type updated:');
+      // console.log('ApiAutocomplete, api type updated:');
       this.debouncedSearch();
     }
   },

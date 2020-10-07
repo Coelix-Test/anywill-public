@@ -2,10 +2,10 @@
   <div>
     <v-expansion-panels v-model="open" dense>
       <v-expansion-panel>
-        <v-expansion-panel-header :class="openClass">
+        <v-expansion-panel-header class="primary white--text">
           Files
           <template v-slot:actions>
-            <v-icon :color="iconColor">
+            <v-icon color="white">
               $expand
             </v-icon>
           </template>
@@ -32,12 +32,7 @@ export default {
     open: null,
   }),
   computed: {
-    openClass(){
-      return this.open === 0 ? 'grey darken-4 white--text' : '';
-    },
-    iconColor(){
-      return this.open === 0 ? 'white' : 'black';
-    }
+    
   },
   components: {
     UploadPopup,

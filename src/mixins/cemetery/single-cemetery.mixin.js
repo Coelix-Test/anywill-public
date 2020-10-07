@@ -1,6 +1,8 @@
 import AddressAutocomplete from '@/components/common/Address/AddressAutocomplete';
+import VuexAddressAutocomplete from '@/components/common/Address/VuexAddressAutocomplete';
 import ApiAutocomplete from '@/components/common/ApiAutocomplete/ApiAutocomplete';
 import ServicesList from '@/components/admin/cemeteries/ServicesList';
+import FileUpload from '@/components/common/FileUpload/FileUpload';
 
 import { CemeteriesApi } from '@/api';
 
@@ -11,10 +13,12 @@ export const SingleCemetery = {
       type: 1,
       classifications: [1],
       options : [],
-      media: [],
+      // media: [],
       address: '124 Conch St, Holden Beach, NC 28462, USA',
       addressComp: {},
       managers: [2,1],
+
+      comment: '',
 
       boundToOrganization: true,
       user_id: 0,
@@ -28,6 +32,8 @@ export const SingleCemetery = {
     AddressAutocomplete,
     ApiAutocomplete,
     ServicesList,
+    FileUpload,
+    VuexAddressAutocomplete,
   },
   methods: {
     collectPostData(){
@@ -36,14 +42,17 @@ export const SingleCemetery = {
         formatted_address: this.address
       };
 
-      const postData = {
+      const files = this.$store.getters['Files/getData'].map(e => e.id);
+
+      let postData = {
         name: this.name,
         type: this.type,
         classifications: this.classifications,
         address: addressData,
         options: this.options,
-        media: this.media,
-        managers: this.managers
+        media: files,
+        managers: this.managers,
+        comments: [],
       };
 
       if(this.boundToOrganization){
@@ -51,6 +60,10 @@ export const SingleCemetery = {
       }
       else{
         postData.user_id = this.user_id;
+      }
+
+      if(this.comment){
+        postData.comments.push({ comment: this.comment});
       }
 
       return postData;
@@ -61,9 +74,15 @@ export const SingleCemetery = {
     getClassificationsOptions(){
       CemeteriesApi.getClassifications().then(response => this.classificationsOptions = response.data);
     },
+    clearStorages(){
+      this.$store.commit('Files/reset');
+    },
   },
   mounted(){
     this.getTypeOptions();
     this.getClassificationsOptions();
+  },
+  beforeDestroy(){
+    this.clearStorages();
   }
 }

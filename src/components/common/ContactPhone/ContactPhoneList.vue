@@ -8,7 +8,9 @@
       </contact-phone-item>
       <v-divider :key="item.id + '-'"></v-divider>
     </template>
-    <v-btn class="ma-3" dark
+    <v-btn class="ma-3" 
+    dark
+    color="primary"
     @click="addItem">
       Add new phone number
     </v-btn>

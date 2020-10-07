@@ -75,6 +75,22 @@ TODO:
             multiple>
           </api-autocomplete>
           
+          <file-upload class="mb-4"></file-upload>
+
+          <v-card>
+            <v-toolbar dense dark class="primary">
+              <v-toolbar-title >Comment</v-toolbar-title>
+            </v-toolbar>
+            <div class="px-3 pt-3">
+              <v-textarea
+                cols="6"
+                label="Leave your comment"
+                no-resize
+                outlined
+                v-model="comment"
+              ></v-textarea>
+            </div>
+          </v-card>
         </v-col>
 
         
@@ -95,6 +111,8 @@ TODO:
 <script>
 import { CemeteriesApi } from '@/api';
 import { SingleCemetery } from '@/mixins/cemetery/single-cemetery.mixin';
+
+
 
 export default {
   mixins: [ SingleCemetery ],
