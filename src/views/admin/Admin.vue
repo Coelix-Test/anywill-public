@@ -34,18 +34,14 @@ export default {
 @import '@/styles/mixins';
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap");
-// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
 .v-application {
   font-family: 'Montserrat', sans-serif !important;
-  .title { // To pin point specific classes of some components
+  .title { 
      font-family: 'Montserrat', sans-serif !important;
   }
 }
 
 #content {
-  // width: 100%;
-  // margin: 0 auto;
-  // padding: 4.5rem 2.5rem 2rem 2.5rem;
   &.is-admin{
     background-color: #FCFCFC;
   }

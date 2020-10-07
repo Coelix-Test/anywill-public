@@ -23,7 +23,7 @@ export default {
         state.data.push({
           id: Math.UUID(),
           name: '',
-          platform: '',
+          platform: null,
         });
       }
     },

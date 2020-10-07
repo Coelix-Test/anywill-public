@@ -11,6 +11,7 @@ import Permissions from '@/store/permissions.store';
 import UserGeneral from '@/store/user-general.store';
 import Files from '@/store/files.store';
 import MapAddress from '@/store/map-address.store';
+import CurrentUser from '@/store/current-user.store';
 
 export default new Vuex.Store({
   state: {
@@ -28,5 +29,6 @@ export default new Vuex.Store({
     UserGeneral,
     Files,
     MapAddress,
+    CurrentUser,
   }
 })

@@ -23,5 +23,12 @@ export default {
     return env.API.put('/admin/users/' + id, data);
   },
 
+  getCurrentUser(token){
+    return env.API.get('/user/data', token ? {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    } : undefined);
+  }
   
 }

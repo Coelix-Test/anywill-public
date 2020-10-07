@@ -48,7 +48,7 @@ export default {
         contacts: contacts,
         media: files,
         addresses: [],
-        comments: [ { comment: this.comment} ],
+        comments: [],
       };
       let addressVuex = this.$store.getters['MapAddress/getData'];
       if(addressVuex.addressComponents.latitude){
@@ -60,6 +60,10 @@ export default {
       if(this.showPermissions){
         let permissions = this.$store.getters['Permissions/allActive'];
         postData.permissions = permissions;
+      }
+
+      if(this.comment){
+        postData.comments.push({ comment: this.comment});
       }
 
       // console.log(postData);

@@ -1,3 +1,4 @@
+import AuthApi from './auth.api';
 import ServicesApi from './services.api';
 import CemeteriesApi from './cemeteries.api';
 import FuneralHomesApi from './funeral-homes.api';
@@ -14,6 +15,7 @@ export default {
 }
 
 export {
+    AuthApi,
     ServicesApi,
     CemeteriesApi,
     LaboratoriesApi,
