@@ -14,7 +14,7 @@ const routes = {
   path: '/admin',
   component: Admin,
   name: 'admin',
-  beforeEnter: multiguard([ middleware.isLogged ]),
+  // beforeEnter: multiguard([ middleware.isLogged ]),
   children: [
     cemeteries,
     funeralHomes,

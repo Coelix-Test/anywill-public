@@ -9,13 +9,6 @@ import VuexAddressAutocomplete from '@/components/common/Address/VuexAddressAuto
 
 export default {
   data: () => ({
-    name: '',
-    leftTabActive: null,
-    leftTabs: [
-      { name: 'General Info', component: UserGeneralInfo,},
-      { name: 'Contact Info', component: ContactPhoneList,},
-      { name: 'Address', component: VuexAddressAutocomplete,},
-    ],
 
     comment: '',
   }),

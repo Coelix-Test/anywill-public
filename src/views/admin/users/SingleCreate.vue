@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex align-center">
       <v-btn
-        class="ma-4"
+        class=""
         @click="createSingle" 
         dark
         color="primary"
@@ -13,58 +13,36 @@
     </div>
     <v-container>
       <v-row>
-        <v-col cols="12" md="6">
-          <v-card>
-            <v-tabs
-              v-model="leftTabActive"
-              background-color="primary"
-              dark
-            >
-              <v-tab
-                v-for="(tab,index) in leftTabs"
-                :key="index"
-                :href="`#tab-${index}`"
-              >
-                {{tab.name}}
-              </v-tab>
+        <v-col cols="12" md="4">
+          
+          <div class="text-h5">General Info</div>
+          <user-general-info></user-general-info>
+          
+          <template v-if="showPermissions">
+            <div class="text-h5 mb-3">User Permissions</div>
+            <user-permissions ></user-permissions>
+          </template>
 
-              <v-tab-item
-                v-for="(tab,index) in leftTabs"
-                :key="index"
-                :value="'tab-' + index"
-              >
-                <component :is="tab.component" class="pa-3"></component>
-              </v-tab-item>
-            </v-tabs>
-            
-          </v-card>
-
-          <v-card class="my-2">
-            <file-upload></file-upload>
-          </v-card>
+          <div class="text-h5">Comment</div>
+          <v-textarea
+            cols="3"
+            rows="3"
+            label="Leave your comment"
+            no-resize
+            v-model="comment"
+          ></v-textarea>
         </v-col>
-        <v-col cols="12" md="6">
-          <v-card v-if="showPermissions">
-            <v-toolbar dense color="primary" dark>
-              <v-toolbar-title >User Permissions</v-toolbar-title>
-            </v-toolbar>
-            <user-permissions class="pa-4 mb-2"></user-permissions>
-          </v-card>
+        <v-col cols="12" md="4">
+          <div class="text-h5">Phones</div>
+          <contact-phone-list></contact-phone-list>
 
-          <v-card>
-            <v-toolbar dense color="primary" dark>
-              <v-toolbar-title >Comment</v-toolbar-title>
-            </v-toolbar>
-            <div class="px-3 pt-3">
-              <v-textarea
-                cols="6"
-                label="Leave your comment"
-                no-resize
-                outlined
-                v-model="comment"
-              ></v-textarea>
-            </div>
-          </v-card>
+          <div class="text-h5">Files</div>
+          <file-upload></file-upload>
+
+        </v-col>
+        <v-col>
+          <div class="text-h5">Address</div>
+          <vuex-address-autocomplete></vuex-address-autocomplete>
         </v-col>
         
       </v-row>
@@ -85,7 +63,7 @@ export default {
       UsersApi.create(postData).then(response => {
         // console.log(response.data);
         if(response.data.id){
-          this.$router.push('users-edit', { id: response.data.id});
+          this.$router.push({ name: 'users-edit', params: { id: response.data.id} });
         }
       });
       

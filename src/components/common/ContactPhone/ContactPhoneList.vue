@@ -8,11 +8,15 @@
       </contact-phone-item>
       <v-divider :key="item.id + '-'"></v-divider>
     </template>
-    <v-btn class="ma-3" 
+    <v-btn 
+    class="my-3" 
     dark
     color="primary"
-    @click="addItem">
-      Add new phone number
+    @click="addItem"
+    large
+    >
+      <v-icon>mdi-plus</v-icon>
+      Add phone number
     </v-btn>
   </div>
 </template>

@@ -77,20 +77,12 @@ TODO:
           
           <file-upload class="mb-4"></file-upload>
 
-          <v-card>
-            <v-toolbar dense dark class="primary">
-              <v-toolbar-title >Comment</v-toolbar-title>
-            </v-toolbar>
-            <div class="px-3 pt-3">
-              <v-textarea
-                cols="6"
-                label="Leave your comment"
-                no-resize
-                outlined
-                v-model="comment"
-              ></v-textarea>
-            </div>
-          </v-card>
+          <v-textarea
+            cols="6"
+            label="Leave your comment"
+            no-resize
+            v-model="comment"
+          ></v-textarea>
         </v-col>
 
         
@@ -99,7 +91,7 @@ TODO:
           <services-list></services-list>
         </v-col>
         <v-col cols="4" >
-          <address-autocomplete :address.sync="address" v-model="addressComp"></address-autocomplete>
+          <vuex-address-autocomplete></vuex-address-autocomplete>
         </v-col>
         
       </v-row>
@@ -122,7 +114,7 @@ export default {
       let postData = this.collectPostData();
       CemeteriesApi.create(postData).then(response => {
         if(response.data.private_id){
-          this.$router.push({name: 'cemeteries-edit', params: { id: response.data.private_id} } );
+          // this.$router.push({name: 'cemeteries-edit', params: { id: response.data.private_id} } );
         }
       });
       

@@ -1,28 +1,42 @@
 <template>
-  <v-container>
+  <v-container 
+      class="px-0"
+    >
     <v-row>
-      <v-col cols="6">
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-text-field
           label="Name"
           :value="user.name"
           @change="saveData('name', $event)"
         ></v-text-field>
       </v-col>
-      <v-col cols="6">
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-text-field
           label="Username"
           :value="user.username"
           @change="saveData('username', $event)"
         ></v-text-field>
       </v-col>
-      <v-col cols="6">
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-text-field
           label="Email"
           :value="user.email"
           @change="saveData('email', $event)"
         ></v-text-field>
       </v-col>
-      <v-col cols="6">
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-select
           :value="user.role"
           :items="roleOptions"
@@ -31,7 +45,10 @@
           @change="saveData('role', $event)"
         ></v-select>
       </v-col>
-      <v-col cols="6" >
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-text-field
           label="Password"
           :value="user.password"
@@ -43,7 +60,10 @@
           
         ></v-text-field>
       </v-col>
-      <v-col cols="6">
+      <v-col 
+        cols="6"
+        class="py-0"
+      >
         <v-text-field
           label="Confirm password"
           :value="user.passwordConfirmation"

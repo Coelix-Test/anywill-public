@@ -12,9 +12,10 @@
           color="primary"
           v-bind="attrs"
           v-on="on"
+          large
         >
-          <v-icon>mdi-upload</v-icon>
-          Upload
+          <v-icon>mdi-plus</v-icon>
+          Upload files
         </v-btn>
       </template>
       <v-card>

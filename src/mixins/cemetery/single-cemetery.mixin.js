@@ -48,12 +48,16 @@ export const SingleCemetery = {
         name: this.name,
         type: this.type,
         classifications: this.classifications,
-        address: addressData,
         options: this.options,
         media: files,
         managers: this.managers,
         comments: [],
       };
+
+      let addressVuex = this.$store.getters['MapAddress/getData'];
+      if(addressVuex.addressComponents.latitude){
+        postData.address = addressVuex.addressComponents;
+      }
 
       if(this.boundToOrganization){
         postData.organization_id = this.organization;

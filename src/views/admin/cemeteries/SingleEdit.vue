@@ -8,7 +8,7 @@
             @click="updateSingle"
             large
           >
-            <span class="font-weight-bold">Save changes</span>
+            <span class="font-weight-bold">Update Single</span>
           </v-btn>
         </v-col>
         <v-col cols="4">
@@ -70,24 +70,15 @@
             api-type="managers"
             multiple>
           </api-autocomplete>
-
+          
           <file-upload class="mb-4"></file-upload>
 
-          <v-card>
-            <v-toolbar dense dark class="primary">
-              <v-toolbar-title >Comment</v-toolbar-title>
-            </v-toolbar>
-            <div class="px-3 pt-3">
-              <v-textarea
-                cols="6"
-                label="Leave your comment"
-                no-resize
-                outlined
-                v-model="comment"
-              ></v-textarea>
-            </div>
-          </v-card>
-          
+          <v-textarea
+            cols="6"
+            label="Leave your comment"
+            no-resize
+            v-model="comment"
+          ></v-textarea>
         </v-col>
 
         
@@ -96,7 +87,7 @@
           <services-list></services-list>
         </v-col>
         <v-col cols="4" >
-          <address-autocomplete :address.sync="address" v-model="addressComp"></address-autocomplete>
+          <vuex-address-autocomplete></vuex-address-autocomplete>
         </v-col>
         
       </v-row>
@@ -127,16 +118,19 @@ export default {
         this.classifications = current.classifications.map(item => item.id);
 
         //calc address components
-        this.address = current.address.formatted_address;
-        delete current.address.formatted_address;
-        current.address.latitude = parseFloat(current.address.latitude);
-        current.address.longitude = parseFloat(current.address.longitude);
-        this.addressComp = current.address;
+        if(response.data.address){
+          let addr = response.data.address;
+          delete addr.addressable_id;
+          delete addr.addressable_type;
+          addr.latitude = parseFloat(addr.latitude);
+          addr.longitude = parseFloat(addr.longitude);
+          this.$store.commit('MapAddress/updateAddrComp', addr);
+        }
         
         //TODO: cemetery options
         //
 
-        this.managers = current.managers;
+        this.managers = current.managers.map(e => e.id);
         if(current.owner_type === "App\Models\Organization"){
           this.boundToOrganization = true;
           this.organization = current.owner_id;

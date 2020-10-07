@@ -154,6 +154,6 @@ export default {
 
 <style lang="scss" scoped>
 .map-container{
-  height: 400px;
+  height: 600px;
 }
 </style>

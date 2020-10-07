@@ -7,7 +7,7 @@
     :label="label"
     :search-input.sync="search"
     item-text="name"
-    item-value="id"
+    :item-value="itemValue"
     :multiple="multiple"
     :chips="multiple"
     :deletable-chips="multiple"
@@ -44,7 +44,14 @@ export default {
     }
   },
   computed: {
-
+    itemValue(){
+      if(this.apiType === 'organizations'){
+        return 'private_id';
+      }
+      else{
+        return 'id';
+      }
+    }
   },
   methods: {
     getItems(){

@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="px-0">
     <v-row align="center">
-      <v-col cols="8" class="py-0">
+      <v-col cols="12" class="py-0">
         <v-text-field
           label="Phone"
           prepend-inner-icon="mdi-phone"
@@ -9,7 +9,7 @@
           @input="updatePhone"
         ></v-text-field>
       </v-col>
-      <v-col cols="6" class="py-0">
+      <v-col cols="10" class="py-0">
         <v-select
           label="Platform"
           :items="platforms"
