@@ -61,6 +61,11 @@ export default {
         text: 'Users',
         route: { name: 'users-all' }
       },
+      {
+        icon: 'mdi-cash-multiple',
+        text: 'Transactions',
+        route: { name: 'transactions-all' }
+      },
     ]
   }),
   computed: {

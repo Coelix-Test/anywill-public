@@ -42,6 +42,7 @@
             <slot name="expand" :item="item"></slot>
           </td>
         </template>
+        
       </v-data-table>
     </v-card>
     <!-- <v-pagination

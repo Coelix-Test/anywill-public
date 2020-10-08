@@ -8,6 +8,7 @@ import funeralHomes from './funeral-homes.router';
 import laboratories from './laboratories.router';
 import services from './services.router';
 import users from './users.router';
+import transactions from './transactions.router';
 import tests from './tests.router';
 
 const routes = {
@@ -21,6 +22,7 @@ const routes = {
     laboratories,
     services,
     users,
+    transactions,
     tests,
   ]
 };
