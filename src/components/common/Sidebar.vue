@@ -62,9 +62,14 @@ export default {
         route: { name: 'users-all' }
       },
       {
-          icon: 'mdi-account',
-          text: 'Organizations',
-          route: { name: 'organizations-all' }
+        icon: 'mdi-account',
+        text: 'Organizations',
+        route: { name: 'organizations-all' }
+      },
+      {
+        icon: 'mdi-cash-multiple',
+        text: 'Transactions',
+        route: { name: 'transactions-all' }
       },
     ]
   }),

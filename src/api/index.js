@@ -9,6 +9,7 @@ import ManagersApi from './managers.api';
 import OrganizationsApi from './organizations.api';
 import PermissionsApi from './permissions.api';
 import FilesApi from './files.api';
+import TransactionsApi from './transactions.api';
 
 export default {
 
@@ -26,4 +27,5 @@ export {
     OrganizationsApi,
     PermissionsApi,
     FilesApi,
+    TransactionsApi,
 }
