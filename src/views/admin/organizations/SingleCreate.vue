@@ -12,7 +12,7 @@ TODO:
                   @click="createSingle"
                   large
           >
-            <span class="font-weight-bold">Update Single</span>
+            <span class="font-weight-bold">Create Single</span>
           </v-btn>
         </v-col>
         <v-col cols="4">
