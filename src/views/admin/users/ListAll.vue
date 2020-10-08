@@ -3,9 +3,12 @@
     <h2 class="u-margin-20">All users</h2>
     <responsive-data-table
       :data="data"
+      :search.sync="search"
       :columns="columns"
-      :totalItems="totalItems"
-      @update="getPage"
+      :loading="loading"
+      :maxPages="maxPages"
+      @search="handleSearch"
+      @overscroll="loadNextPage"
     >
       <template v-slot:expand="{ item }">
         <div>
@@ -50,7 +53,10 @@ export default {
   },
   data: () => ({
     data: [],
-    totalItems: 0,
+    loading: false,
+    page: 1,
+    maxPages: 1,
+    search: '',
     columns: [
       {
         value: 'name',
@@ -75,29 +81,27 @@ export default {
   },
   methods: {
     getPage({ page, search }){
-      console.log('page:', page, ' search:', search);
+      
+      this.loading = true;
       UsersApi.getPage({
         page: page,
-        search: search
+        search: search,
+        per_page: 25,
       })
       .then(data => {
 
-        this.data.splice(0);
-        data.data.data.forEach((item, index) => {
-          this.$set(this.data, index, item);
-        });
         this.totalItems = data.data.total;
+        this.maxPages = data.data.last_page;
+
+        data.data.data.forEach((item, index) => {
+          this.data.push(item);
+        });
+
+        this.$nextTick(() => {
+          this.loading = false;
+        });
 
       });
-    },
-    handleSearch(search){
-      this.search = search;
-      this.page = 1;
-      this.getPage();
-    },
-    handleChangePage(page){
-      this.page = page;
-      this.getPage();
     },
     deleteItem(id){
       UsersApi.delete(id)
@@ -108,6 +112,25 @@ export default {
         }
       });
     },
+    handleSearch(search){
+      this.page = 1;
+      //remove old items
+      this.data.splice(0);
+      this.getPage({
+        page: this.page,
+        search: search
+      });
+    },
+    loadNextPage(){
+      if(!this.loading && (this.page + 1 <= this.maxPages) ){
+        this.page++;
+        // console.log('load page №', this.page);
+        this.getPage({
+          page: this.page,
+          search: this.search,
+        });
+      }
+    }
   },
   mounted(){
     this.getPage({ page: 1, search: ''});

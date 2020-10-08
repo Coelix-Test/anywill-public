@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-card>
+    <v-card ref="lazyTable">
       <v-card-title>
         <v-text-field
-          v-model="search"
+          :value="search"
           @input="debouncedSearch"
           append-icon="mdi-magnify"
           label="Search"
@@ -15,7 +15,6 @@
         :headers="displayColumns"
         :items="data"
         item-key="id"
-        :items-per-page="15"
         class=""
         mobile-breakpoint="1"
         hide-default-footer
@@ -23,6 +22,8 @@
         show-expand
         show-select
         dense
+        disable-pagination
+        
       >
         <template 
           v-slot:expanded-item="{ headers, item }"
@@ -43,13 +44,13 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-pagination
+    <!-- <v-pagination
       v-model="page"
       :length="paginationLength"
       :total-visible="7"
       class="mt-5"
       @input="handleChangePage"
-    />
+    /> -->
   </div>
 </template>
 
@@ -59,28 +60,32 @@ export default {
   components: {
   },
   data: () => ({
-    search: '',
-    page: 1,
     displayColumns: [],
     hideColumns: [],
   }),
   computed: {
-    paginationLength(){
-      return Math.ceil(this.totalItems / 15);
-    },
+    
   },
   props: {
     data: {
       type: Array,
       default: []
     },
-    totalItems: {
+    maxPages: {
       type: Number,
-      default: 0
+      default: 1
     },
     columns: {
       type: Array,
       default: []
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    search: {
+      type: String,
+      default: '',
     }
   },
   methods: {
@@ -99,29 +104,49 @@ export default {
       });
     },
     handleSearch(search){
+      this.$emit('update:seach', search);
       this.$emit('search', search);
-      this.$emit('update', {
-        page: this.page,
-        search: this.search
-      });
     },
-    handleChangePage(page){
-      this.$emit('change-page', page);
-      this.$emit('update', {
-        page: this.page,
-        search: this.search
-      });
+    handleOverScroll(){
+      this.$emit('overscroll');
     },
+    isScrolledToBottom(){
+      const tableEl = this.$refs.lazyTable.$el;
+      const BottomOfTablePosition = tableEl.offsetTop + tableEl.offsetHeight;
+      const BottomWindowPixelPosition = document.documentElement.scrollTop + window.innerHeight;
+      let scrolledToBottomOfTable = BottomOfTablePosition <= BottomWindowPixelPosition;
+      return scrolledToBottomOfTable;
+    },
+    onScroll(){
+      if(this.isScrolledToBottom()){
+        //trigger next page load
+        this.debouncedOverScroll();
+      }
+    },
+    addScrollEvent(){
+      window.addEventListener('scroll', this.onScroll);
+    },
+  },
+  watch: {
+    loading(){
+      //Loading passed and
+      if(!this.loading && this.isScrolledToBottom()){
+        this.handleOverScroll();
+      }
+    }
   },
   created() {
     this.debouncedSearch = _.debounce(this.handleSearch, 500);
+    this.debouncedOverScroll = _.debounce(this.handleOverScroll, 100);
   },
   mounted(){
     window.addEventListener('resize', this.resize);
     this.resize();
+    this.addScrollEvent();
   },
   beforeDestroy(){
     window.removeEventListener('resize', this.resize);
+    window.removeEventListener('scroll', this.onScroll);
   }
 }
 </script>
