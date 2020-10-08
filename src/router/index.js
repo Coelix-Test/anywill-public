@@ -32,17 +32,17 @@ router.beforeEach(async (to, from, next) => {
 
   window.scrollTo(0, 0);
 
-  // if(!store.getters['user/isLoaded']) {
-  //   if(store.getters['user/token']) {
-  //     await API.user.getData(store.getters['user/token']).then(res => {
-  //       store.commit('user/auth', store.getters['user/token']);
-  //       store.commit('user/saveData', res.data);
+  // if(!store.getters['CurrentUser/isLoaded']) {
+  //   if(store.getters['CurrentUser/token']) {
+  //     await API.user.getData(store.getters['CurrentUser/token']).then(res => {
+  //       store.commit('CurrentUser/auth', store.getters['CurrentUser/token']);
+  //       store.commit('CurrentUser/saveData', res.data);
         
   //     }).catch(err => {
   //       console.error('Wrong auth token!');
   //     });
   //   }
-  //   store.commit('user/load');
+  //   store.commit('CurrentUser/load');
   // }
 
   next();
