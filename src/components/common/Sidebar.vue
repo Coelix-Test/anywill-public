@@ -61,6 +61,11 @@ export default {
         text: 'Users',
         route: { name: 'users-all' }
       },
+      {
+          icon: 'mdi-account',
+          text: 'Organizations',
+          route: { name: 'organizations-all' }
+      },
     ]
   }),
   computed: {
