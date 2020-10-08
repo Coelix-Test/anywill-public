@@ -9,6 +9,8 @@ import laboratories from './laboratories.router';
 import services from './services.router';
 import users from './users.router';
 import tests from './tests.router';
+import organizations from './organizations.router';
+
 
 const routes = {
   path: '/admin',
@@ -22,6 +24,7 @@ const routes = {
     services,
     users,
     tests,
+    organizations
   ]
 };
 
