@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    class="api-autocomplete"
     :value="value"
     @input="onSelect"
     :loading="isLoading"
@@ -117,5 +118,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.api-autocomplete::v-deep .v-chip--select{
+  background: #161568 !important;
+  color: #fff;
+  .mdi-close-circle{
+    color: #fff;
+  }
+}
 </style>

@@ -46,7 +46,8 @@
             item-text="name"
             item-value="id"
             multiple
-          >  
+            class="th-autocomplete"
+          >
           </v-autocomplete>
 
           <v-switch v-model="boundToOrganization" label="Is bound to organization"></v-switch>
@@ -159,5 +160,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.th-autocomplete::v-deep .v-chip--select{
+  background: #161568 !important;
+  color: #fff;
+  .mdi-close-circle{
+    color: #fff;
+  }
+}
 </style>

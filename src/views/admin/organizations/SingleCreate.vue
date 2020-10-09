@@ -1,7 +1,3 @@
-<!--
-TODO:
-- Adding services
--->
 <template>
   <div>
     <v-container>

@@ -21,12 +21,16 @@ export default {
   // },
 
   delete(id){
-    return env.API.delete('admin/cemeteries/' + id);
+    return env.API.delete('admin/transactions/' + id);
   },
 
   getTypes(){
     return env.API.get('/transaction-types');
   },
+
+  getCurrencies(){
+    return env.API.get('/currencies');
+  }
   
   // getClassifications(){
   //   return env.API.get('/cemetery-classifications');

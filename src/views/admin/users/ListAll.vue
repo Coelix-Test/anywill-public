@@ -10,17 +10,16 @@
       @search="handleSearch"
       @overscroll="loadNextPage"
     >
-      <template v-slot:expand="{ item }">
-        <div>
+      <template v-slot:[`item.actions`]="{ item }">
+        <div class="d-flex">
           <v-btn 
-            color="primary" 
-            class="ma-2"
+            icon
             :to="{name: 'users-edit', params: {id: item.id}}"
           >
-            <v-icon left>mdi-pencil</v-icon>Edit
+            <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn color="error" class="ma-2" @click="deleteItem(item.id)">
-            <v-icon left>mdi-delete</v-icon>Delete
+          <v-btn icon @click="deleteItem(item.id)">
+            <v-icon>mdi-delete</v-icon>
           </v-btn>
         </div>
       </template>
@@ -73,6 +72,13 @@ export default {
         value: 'username',
         text: 'Username',
         breakpoint: 1024
+      },
+      {
+        value: 'actions',
+        text: '',
+        breakpoint: false,
+        width: '1%',
+        align: 'end',
       },
     ],
   }),

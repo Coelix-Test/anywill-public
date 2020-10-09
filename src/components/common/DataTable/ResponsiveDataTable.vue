@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-card ref="lazyTable">
+  <div class="c-responsive-data-table">
+    <v-card ref="lazyTable" class="elevation-0 transparent">
       <v-card-title>
         <v-text-field
           :value="search"
@@ -25,6 +25,14 @@
         disable-pagination
         
       >
+    
+        <template
+          v-for="column in displayColumns"
+          v-slot:[`item.`+column.value]="{ item }"
+        >
+          <slot :name="'item.'+column.value" v-bind="{ item }" >{{item[column.value]}}</slot>
+        </template>
+
         <template 
           v-slot:expanded-item="{ headers, item }"
         >
@@ -87,7 +95,7 @@ export default {
     search: {
       type: String,
       default: '',
-    }
+    },
   },
   methods: {
     resize(){
@@ -156,4 +164,14 @@ export default {
 .expand-list{
   list-style-type: none;
 }
+.c-responsive-data-table::v-deep {
+  tr.v-data-table__expanded{
+    box-shadow: none;
+  }
+  .v-data-table{
+    background: transparent;
+    border: thin solid rgba(0, 0, 0, 0.12);
+  }
+}
+  
 </style>

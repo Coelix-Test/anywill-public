@@ -11,22 +11,9 @@
       @overscroll="loadNextPage"
     >
       <template v-slot:item.amount="{ item }">
-        <v-chip :color="getColor(item.amount)" dark>{{ item.amount }}</v-chip>
+        <strong :class="getTextColor(item.amount)">{{ item.amount }}</strong>
       </template>
-      <template v-slot:expand="{ item }">
-        <div>
-          <v-btn 
-            color="primary" 
-            class="ma-2"
-            :to="{name: 'transactions-edit', params: {id: item.id}}"
-          >
-            <v-icon left>mdi-pencil</v-icon>Edit
-          </v-btn>
-          <v-btn color="error" class="ma-2" @click="deleteItem(item.id)">
-            <v-icon left>mdi-delete</v-icon>Delete
-          </v-btn>
-        </div>
-      </template>
+      
     </responsive-data-table>
     <v-fab-transition>
       <v-btn
@@ -66,6 +53,37 @@ export default {
         text: 'Amount',
         breakpoint: false,
         align: 'start',
+        width: '1%',
+      },
+      {
+        value: 'type',
+        text: 'Type',
+        breakpoint: false,
+        align: 'start',
+      },
+      {
+        value: 'currency',
+        text: 'Currency',
+        breakpoint: false,
+        align: 'center',
+      },
+      {
+        value: 'from',
+        text: 'From',
+        breakpoint: false,
+        align: 'start',
+      },
+      {
+        value: 'to',
+        text: 'To',
+        breakpoint: false,
+        align: 'start',
+      },
+      {
+        value: 'date',
+        text: 'Date',
+        breakpoint: 4000,
+        align: 'start',
       },
     ],
   }),
@@ -89,6 +107,21 @@ export default {
           
           item.id = item.private_id;
           delete item.private_id;
+          if(type === 'transfer'){
+            item.to = item.to_user.name;
+            item.from = item.from_user.name;
+          }
+          
+          // if(type === 'deposit'){
+          //   item.to = item.to_user.name;
+          //   item.from = item.from_user.name;
+          // }
+
+          item.currency = "USD";
+          let date = new Date(item.created_at);
+          item.date = `${("0" + date.getDay()).slice(-2)}.${("0" + date.getMonth()).slice(-2)}.${date.getFullYear()} 
+          ${("0" + date.getHours()).slice(-2)}:${("0" + date.getMinutes()).slice(-2)}`;
+
           this.data.push(item);
         });
 
@@ -126,8 +159,8 @@ export default {
         });
       }
     },
-    getColor(amount){
-      return amount > 0 ? 'red' : 'green';
+    getTextColor(amount){
+      return amount > 0 ? 'green--text' : 'red--text';
     }
   },
   mounted(){
